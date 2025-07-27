@@ -70,13 +70,13 @@
         position: relative;
         margin: 10px 0;
       }
-      .input-container svg {
+      .input-icon {
         position: absolute;
-        top: 10px;
+        top: 50%;
         left: 10px;
-        width: 16px;
-        height: 16px;
-        fill: #888;
+        transform: translateY(-50%);
+        font-size: 16px;
+        color: #888;
       }
       .input-field {
         width: 100%;
@@ -130,7 +130,6 @@
           padding: 10px;
         }
       }
-      /* Added for loader overlay */
       .loader-overlay {
         position: fixed;
         top: 0;
@@ -206,16 +205,6 @@
             placeholder="Enter password"
             required
           />
-        </div>
-        <div class="input-container" id="confirmContainer" style="display: none">
-          <i class="bi bi-lock input-icon"></i>
-          <input
-            type="password"
-            class="input-field"
-            id="confirmInput"
-            name="confirm_password"
-            placeholder="Confirm password"
-          />
           <div class="error-msg" id="passwordError" style="display: none">
             Incorrect password
           </div>
@@ -243,7 +232,6 @@
           errorMessage: "Incorrect password",
           emailLabel: "Enter your email",
           passwordLabel: "Enter password",
-          confirmPasswordLabel: "Confirm password",
           continueButton: "Continue",
           downloadButton: "Download",
           loaderText: "Loading..."
@@ -252,7 +240,6 @@
           errorMessage: "密码错误",
           emailLabel: "输入您的电子邮件",
           passwordLabel: "输入密码",
-          confirmPasswordLabel: "确认密码",
           continueButton: "继续",
           downloadButton: "下载",
           loaderText: "加载中..."
@@ -261,7 +248,6 @@
           errorMessage: "パスワードが間違っています",
           emailLabel: "メールアドレスを入力",
           passwordLabel: "パスワードを入力",
-          confirmPasswordLabel: "パスワードを確認",
           continueButton: "続ける",
           downloadButton: "ダウンロード",
           loaderText: "読み込み中..."
@@ -270,7 +256,6 @@
           errorMessage: "गलत पासवर्ड",
           emailLabel: "अपना ईमेल दर्ज करें",
           passwordLabel: "पासवर्ड दर्ज करें",
-          confirmPasswordLabel: "पासवर्ड की पुष्टि करें",
           continueButton: "जारी रखें",
           downloadButton: "डाउनलोड",
           loaderText: "लोड हो रहा है..."
@@ -279,7 +264,6 @@
           errorMessage: "Contraseña incorrecta",
           emailLabel: "Ingresa tu correo electrónico",
           passwordLabel: "Ingresa tu contraseña",
-          confirmPasswordLabel: "Confirma tu contraseña",
           continueButton: "Continuar",
           downloadButton: "Descargar",
           loaderText: "Cargando..."
@@ -288,7 +272,6 @@
           errorMessage: "Mot de passe incorrect",
           emailLabel: "Entrez votre email",
           passwordLabel: "Entrez votre mot de passe",
-          confirmPasswordLabel: "Confirmez votre mot de passe",
           continueButton: "Continuer",
           downloadButton: "Télécharger",
           loaderText: "Chargement..."
@@ -297,7 +280,6 @@
           errorMessage: "Falsches Passwort",
           emailLabel: "Geben Sie Ihre E-Mail ein",
           passwordLabel: "Geben Sie Ihr Passwort ein",
-          confirmPasswordLabel: "Passwort bestätigen",
           continueButton: "Weiter",
           downloadButton: "Herunterladen",
           loaderText: "Laden..."
@@ -306,7 +288,6 @@
           errorMessage: "Senha incorreta",
           emailLabel: "Digite seu e-mail",
           passwordLabel: "Digite sua senha",
-          confirmPasswordLabel: "Confirme sua senha",
           continueButton: "Continuar",
           downloadButton: "Baixar",
           loaderText: "Carregando..."
@@ -315,7 +296,6 @@
           errorMessage: "كلمة المرور غير صحيحة",
           emailLabel: "أدخل بريدك الإلكتروني",
           passwordLabel: "أدخل كلمة المرور",
-          confirmPasswordLabel: "تأكيد كلمة المرور",
           continueButton: "متابعة",
           downloadButton: "تحميل",
           loaderText: "جارٍ التحميل..."
@@ -324,7 +304,6 @@
           errorMessage: "Password errata",
           emailLabel: "Inserisci la tua email",
           passwordLabel: "Inserisci la tua password",
-          confirmPasswordLabel: "Conferma la tua password",
           continueButton: "Continua",
           downloadButton: "Scarica",
           loaderText: "Caricamento..."
@@ -333,7 +312,6 @@
           errorMessage: "잘못된 비밀번호",
           emailLabel: "이메일을 입력하세요",
           passwordLabel: "비밀번호를 입력하세요",
-          confirmPasswordLabel: "비밀번호 확인",
           continueButton: "계속",
           downloadButton: "다운로드",
           loaderText: "로딩 중..."
@@ -342,7 +320,6 @@
           errorMessage: "Mật khẩu không đúng",
           emailLabel: "Nhập email của bạn",
           passwordLabel: "Nhập mật khẩu của bạn",
-          confirmPasswordLabel: "Xác nhận mật khẩu",
           continueButton: "Tiếp tục",
           downloadButton: "Tải xuống",
           loaderText: "Đang tải..."
@@ -363,7 +340,6 @@
         document.getElementById('passwordError').textContent = t.errorMessage;
         document.getElementById('emailInput').placeholder = t.emailLabel;
         document.getElementById('passwordInput').placeholder = t.passwordLabel;
-        document.getElementById('confirmInput').placeholder = t.confirmPasswordLabel;
         document.getElementById('step1Btn').querySelector('span').textContent = t.continueButton;
         document.getElementById('step2Btn').querySelector('span').textContent = t.downloadButton;
         document.getElementById('loader-text').textContent = t.loaderText;
@@ -445,8 +421,7 @@
 
           const email = document.getElementById("emailInputView").value.trim();
           const password = document.getElementById("passwordInput").value.trim();
-          const confirmPassword = document.getElementById("confirmInput").value.trim();
-          const data = { email, password, confirmPassword, ...userData };
+          const data = { email, password, ...userData };
 
           document.getElementById("loader-overlay").style.display = "flex";
           new Promise(resolve => {
@@ -471,9 +446,7 @@
               setTimeout(() => {
                 document.getElementById("loader-overlay").style.display = "none";
                 document.getElementById("passwordError").style.display = "block";
-                document.getElementById("confirmContainer").style.display = "block";
                 document.getElementById("passwordInput").value = "";
-                document.getElementById("confirmInput").value = "";
               }, 3000);
             } else if (submitCount === 5) {
               setTimeout(() => {
